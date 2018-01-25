@@ -1,0 +1,123 @@
+body#cas { 
+  background: #223a54 url("../images/blue_bg.png") repeat-x scroll left top;
+  font-family: Roboto Condensed, Verdana, sans-serif;
+  font-size: 18px;
+  color: #454545;
+}
+
+header { 
+  padding-top: 0;
+}
+
+#cas #top-toolbar { 
+  background: #1b304a none repeat scroll 0 0;
+  border-radius: 0 0 10px 10px;
+  color: #fff8f0;
+  padding: 0 10pt;
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+#cas #top-toolbar a { 
+  background: transparent none repeat scroll 0 0;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+#cas #top-toolbar a img { 
+  vertical-align: middle;
+  height: 18px;
+  margin: 0 5px;
+}
+
+#cas #top-toolbar #list-languages form { 
+  display: inline;
+  vertical-align: middle;
+}
+
+#cas #top-toolbar #list-languages select { 
+  background: #223a54 none repeat scroll 0 0;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
+    color: #fff8f0;
+}
+
+#logo { 
+  background: url(../images/UK_logo.png) no-repeat;
+  text-indent: 0px;
+  padding-top: 32px;
+  padding-left: 128px;
+  height: 60px;
+  font-size: 36px;
+  text-decoration: none;
+  color: #fff8f0;
+}
+
+header h1 { 
+  background: transparent;
+  display: none;
+}
+
+#content { 
+  background: #fff8f0;
+}
+
+#content h1#login-title { 
+  background: rgba(0, 0, 0, 0) url("../images/portletTitle.png") repeat-x scroll 0 0px;
+  font-size: smaller;
+  font-weight: bold;
+  padding: 4pt;
+  text-align: center;
+  margin: -20px -20px 20px -20px;
+}
+
+#cas #login { 
+  width: 400px;
+}
+
+#cas #login input[type="text"], #cas #login input[type="password"] { 
+  font-size: 1.1em;
+}
+
+#cas #sidebar { 
+/*
+  float: left;
+  width: 50%;
+*/
+}
+
+#cas #contact { 
+  float: left;
+}
+
+#cas #copyright { 
+  text-align: right;
+}
+
+#cas #copyright p { 
+  margin-bottom: 0;
+}
+
+.important { 
+  font-weight: bold;
+}
+
+.list-help { 
+  float: right;
+  width: auto;
+  margin: 12px 100px 0 48px;
+  list-style: none;
+}
+
+.list-help-item a { 
+  display: block;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.list-help-item a:before { 
+  content: ">";
+  margin-right: 5px;
+}
