@@ -70,16 +70,52 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.jasig.cas</groupId>
-            <artifactId>cas-server-webapp</artifactId>
-            <version>${cas.version}</version>
-            <type>war</type>
-            <scope>runtime</scope>
+            	<groupId>org.jasig.cas</groupId>
+            	<artifactId>cas-server-webapp</artifactId>
+            	<version>${cas.version}</version>
+            	<type>war</type>
+            	<scope>runtime</scope>
         </dependency>
+	<dependency>
+     		<groupId>org.jasig.cas</groupId>
+     		<artifactId>cas-server-support-ldap</artifactId>
+     		<version>${cas.version}</version>
+	</dependency>
+        <dependency>
+                <groupId>org.jasig.cas</groupId>
+  	        <artifactId>cas-server-support-saml-mdui</artifactId>
+  	        <version>${cas.version}</version>
+        </dependency>        
+        <dependency>
+                <groupId>org.jasig.cas</groupId>
+                <artifactId>cas-server-integration-hazelcast</artifactId>
+                <version>${cas.version}</version>
+        </dependency>        
+
+<!-- NOT USED
+ |        <dependency>
+ |           	<groupId>cz.cuni.cas</groupId>
+ |           	<artifactId>cas-jaas</artifactId>
+ |           	<version>0.3</version>
+ |           	<scope>runtime</scope>
+ |       </dependency>
+ +-->
+
+	<dependency>
+      		<groupId>org.apache.commons</groupId>
+      		<artifactId>commons-collections4</artifactId>
+      		<version>4.1</version>
+	</dependency>
+        <dependency>
+                <groupId>net.sourceforge.jregex</groupId>
+                <artifactId>jregex</artifactId>
+                <version>1.2_01</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
-        <cas.version>4.2.7</cas.version>
+        <cas.version>4.2.3</cas.version>
         <maven-jetty-plugin.version>9.3.6.v20151106</maven-jetty-plugin.version>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
@@ -94,10 +130,6 @@
         <repository>
             <id>sonatype-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>shibboleth-releases</id>
-            <url>https://build.shibboleth.net/nexus/content/repositories/releases</url>
         </repository>
     </repositories>
 </project>
