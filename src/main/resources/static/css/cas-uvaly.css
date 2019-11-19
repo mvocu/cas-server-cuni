@@ -1,0 +1,165 @@
+@import "cas.css";
+
+@import url(https://fonts.googleapis.com/css?family=Poppins:300,400,400i,600,700&subset=latin-ext);
+
+body { 
+  background: #ddd;
+  color: #2d2d1d;
+  font-family: Poppins,sans-serif;
+  font-size: 12px;
+}
+
+body  > .container {
+  padding: 65px 0 0;
+}
+
+@media screen and (max-width: 960px) {
+  body {
+    font-size: 10px;
+  }
+}
+
+header > .navbar {
+  background: #fff;
+  border-bottom: 2px solid #7bbb57;
+  padding-bottom: 20px;
+  padding-top: 0;
+}
+
+@media screen and (max-width: 480px) {
+}
+
+.navbar-brand { 
+  background: url(../images/uvaly_logo.svg) no-repeat top left;
+  background-size: 160px 72px;
+  margin-top: 12px;
+  height: 72px;
+  width: 160px;
+}
+
+@media screen and (max-width: 855px) {
+  .navbar-brand { 
+    display: block;
+  }
+}
+
+header h1.navbar-text {
+  margin-top: 12px;
+  color: #666;
+  font-size: 100%;
+  font-weight: bold;
+  padding-top: 40px;
+}
+
+@media screen and (max-width: 480px) {
+  #logo {
+     display: block;
+  }
+  header h1 {
+     display: none;
+  }
+}
+
+#header {
+  max-width: 640px; 
+  box-sizing: content-box;
+}
+
+#content { 
+  background: #fff;
+  padding: 20px;
+  max-width: 640px;
+  margin: 80px auto 0;
+  border-radius: 15px;
+  box-sizing: content-box;
+}
+
+.login .card {
+  border: 0;
+}
+
+#fm1 h3 {
+  font-size: 1.2em;
+  margin-bottom: 2em;
+}
+
+@media screen and (max-width: 480px) {
+  #content {
+    margin-top: 10px;
+  }
+
+  #cas #login h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #cas #login .row {
+	padding-top: 0px;
+  }
+}
+
+#cas #login input[type="text"], #cas #login input[type="password"] { 
+  font-size: 1.1em;
+}
+
+@media screen and (max-width: 480px) {
+  #cas #login input[type="text"], #cas #login input[type="password"] {
+    font-size: 1em;
+    padding: 8px;
+  }
+}
+
+
+#cas #sidebar { 
+/*
+  float: left;
+  width: 50%;
+*/
+}
+
+#cas #contact { 
+  float: left;
+}
+
+#cas #copyright { 
+  text-align: right;
+}
+
+#cas #copyright p { 
+  margin-bottom: 0;
+}
+
+.important { 
+  font-weight: bold;
+}
+
+.list-help { 
+  float: right;
+  width: auto;
+  margin: 12px 100px 12px 48px;
+  list-style: none;
+}
+
+.list-help-item a { 
+  display: block;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.list-help-item a:before { 
+  content: ">";
+  margin-right: 5px;
+}
+
+#cas #serviceui.serviceinfo {
+  clear: both;
+  margin-top: 10px;
+  border: 1px dotted #7bbb57;
+}
+
+footer {
+  display: none;
+}
+
