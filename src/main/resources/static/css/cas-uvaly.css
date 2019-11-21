@@ -153,6 +153,12 @@ header h1.navbar-text {
   margin-right: 5px;
 }
 
+#list-providers h3 {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+
 #cas #serviceui.serviceinfo {
   clear: both;
   margin-top: 10px;

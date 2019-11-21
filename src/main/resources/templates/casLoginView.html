@@ -21,7 +21,12 @@
         </div>
       </div>
       <div class="row">
-        <div id="notices" class="col-md mt-3 mt-md-0"  th:if="${delegatedAuthenticationProviderDominant == null}">
+        <div id="providers" class="col-md mt-3 mt-md-0">
+            <div th:replace="fragments/loginProviders :: loginProviders">
+                <a href="fragments/loginProviders.html">loginProviders</a>
+            </div>
+        </div>
+         <div id="notices" class="col-md mt-3 mt-md-0"  th:if="${delegatedAuthenticationProviderDominant == null}">
             <div th:replace="fragments/insecure :: insecure">
                 <a href="fragments/insecure.html">insecure alert goeshere</a>
             </div>
@@ -31,19 +36,14 @@
             <div th:replace="fragments/cookies :: cookiesDisabled">
                 <a href="fragments/cookies.html">cookies fragment</a>
             </div>
+<!--
             <div th:replace="fragments/serviceui :: serviceUI">
                 <a href="fragments/serviceui.html">service ui fragment</a>
             </div>
-<!--
             <div th:replace="fragments/cas-resources-list :: cas-resource-list">
                 <a href="fragments/cas-resources-list.html">cas-resource</a> list fragment
             </div>
 -->
-        </div>
-        <div id="providers" class="col-md mt-3 mt-md-0">
-            <div th:replace="fragments/loginProviders :: loginProviders">
-                <a href="fragments/loginProviders.html">loginProviders</a>
-            </div>
         </div>
       </div>
     </div>

@@ -191,6 +191,9 @@
 
 		<div class="col-md-6">	
 		<div class="card-body">
+	            <div th:replace="fragments/serviceui :: serviceUI">
+                	<a href="fragments/serviceui.html">service ui fragment</a>
+            	    </div>
                     <div th:replace="fragments/loginsidebar :: loginsidebar"/>
 
 
@@ -212,7 +215,7 @@
 
                     <div th:unless="${passwordManagementEnabled}">
                         <br/>
-                        <span class="fa fa-question-circle"></span>
+                        <span class="fa fa-chevron-right"></span>
                         <span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span>
                         <p/>
                     </div>
