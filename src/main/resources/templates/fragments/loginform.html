@@ -213,12 +213,15 @@
                         <p/>
                     </form>
 
-                    <div th:unless="${passwordManagementEnabled}">
-                        <br/>
-                        <span class="fa fa-chevron-right"></span>
-                        <span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span>
+                    <ul th:unless="${passwordManagementEnabled}" class="list-help">
+                        <!-- <span class="fa fa-chevron-right"></span> -->
+                        <li class="list-help-item"><span th:utext="#{screen.pm.button.identity}">Forgot your login?</span></li>
+                        <!-- <span class="fa fa-chevron-right"></span> -->
+                        <li class="list-help-item"><span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span></li>
+                        <!-- <span class="fa fa-chevron-right"></span> -->
+                        <li class="list-help-item"><span th:utext="#{screen.pm.button.register}">Need new account?</span></li>
                         <p/>
-                    </div>
+                    </ul>
 
                 </div>
 		</div> <!-- /col -->
