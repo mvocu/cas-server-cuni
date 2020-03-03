@@ -25,7 +25,7 @@
                     <img th:unless="${serviceUIMetadata.logoUrl}"
                          th:title="${serviceUIMetadata.displayName}"
                          th:alt="${serviceUIMetadata.displayName}"
-                         th:src="@{images/webapp.png}"
+                         th:src="@{images/uvaly_logo.svg}"
                          th:width="${serviceUIMetadata.logoWidth}"
                          th:height="${serviceUIMetadata.logoHeight}"/>
                 </td>
@@ -51,7 +51,7 @@
                 </td>
                 <td>
                     <img th:src="${registeredService.logo}" th:if="${registeredService.logo}"/>
-                    <img th:src="@{images/webapp.png}" th:unless="${registeredService.logo}"/>
+                    <img th:src="@{images/uvaly_logo.svg}" th:unless="${registeredService.logo}"/>
                 </td>
             </tr>
         </table>
