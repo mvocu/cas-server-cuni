@@ -31,7 +31,7 @@
                             <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}">Example error</span>
                         </div>
 
-                        <h3 th:utext="#{screen.welcome.instructions}">Enter your Username and Password</h3>
+                        <!-- <h3 th:utext="#{screen.welcome.instructions}">Enter your Username and Password</h3> -->
 
                         <section class="form-group">
                             <span th:if="${availableAuthenticationHandlerNames != null}">
@@ -174,6 +174,13 @@
                          </span>
                     </form>
 
+		    <div id="registration" class="mt-4">
+                    	<div class="text-center">
+                		<h3 th:utext="#{screen.welcome.register}">Not yet registered?</h3>
+                 		<span th:utext="#{screen.pm.button.register}">Register new account</span>
+            		</div>
+		    </div>
+
                     <script type="text/javascript" th:inline="javascript">
                         /*<![CDATA[*/
                         var i = /*[[@{#{screen.welcome.button.loginwip}}]]*/
@@ -190,12 +197,8 @@
 		</div> <!-- /col -->
 
 		<div class="col-md-6">	
-		<div class="card-body">
-	            <div th:replace="fragments/serviceui :: serviceUI">
-                	<a href="fragments/serviceui.html">service ui fragment</a>
-            	    </div>
+		<div class="card-body clearfix">
                     <div th:replace="fragments/loginsidebar :: loginsidebar"/>
-
 
                     <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
                         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
@@ -218,12 +221,22 @@
                         <li class="list-help-item"><span th:utext="#{screen.pm.button.identity}">Forgot your login?</span></li>
                         <!-- <span class="fa fa-chevron-right"></span> -->
                         <li class="list-help-item"><span th:utext="#{screen.pm.button.forgotpwd}">Forgot your password?</span></li>
-                        <!-- <span class="fa fa-chevron-right"></span> -->
-                        <li class="list-help-item"><span th:utext="#{screen.pm.button.register}">Need new account?</span></li>
                         <p/>
                     </ul>
 
-                </div>
+              </div>
+	      <div id="notices" class="col-md mt-3 mt-md-0"  th:if="${delegatedAuthenticationProviderDominant == null}">
+            		<div th:replace="fragments/insecure :: insecure">
+                		<a href="fragments/insecure.html">insecure alert goeshere</a>
+            		</div>
+            		<div th:replace="fragments/defaultauthn :: staticAuthentication">
+                		<a href="fragments/defaultauthn.html">defaultAuthn</a>
+            		</div>
+            		<div th:replace="fragments/cookies :: cookiesDisabled">
+                		<a href="fragments/cookies.html">cookies fragment</a>
+            		</div>
+              </div>
+
 		</div> <!-- /col -->
 		</div> <!-- /row -->
 

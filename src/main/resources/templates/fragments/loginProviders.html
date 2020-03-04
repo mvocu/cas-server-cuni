@@ -13,7 +13,12 @@
     <div th:fragment="loginProviders" th:remove="tag">
         <div th:if="${delegatedAuthenticationProviderUrls}" id="list-providers"
              th:class="${delegatedAuthenticationProviderDominant == null ? 'card d-sm-none d-md-block bg-light' : ''}">
-            
+	  
+	  <div class="row no-gutters">
+
+            <div class="col-md-6">
+ 
+
             <div class="card-body">
                 <h3 class="card-title" th:utext="#{screen.welcome.label.loginwith}" th:if="${delegatedAuthenticationProviderDominant == null}">Login with:</h3>
                 <div class="card-title" th:if="${delegatedAuthenticationProviderDominant != null}">
@@ -52,13 +57,24 @@
                     </ul>
                 </div>
             </div>
-	    <div class="card-footer">
+
+	  </div> <!-- end of col -->
+	  <div class="col-md-6">
+
+	    <div class="card-body">
 		<strong><span th:utext="#{screen.welcome.info.loginproviders}" /></strong>
 	    </div>
+
+	  </div> <!-- end of col -->
+         </div> <!-- end of row -->
+
         </div>
 
         <div th:if="${wsfedUrls}" id="list-providers"
              th:class="${delegatedAuthenticationProviderDominant == null ? 'card d-sm-none d-md-block bg-light' : ''}">
+
+          <div class="row no-gutters">
+            <div class="col-md-6">
 
             <div class="card-body">
                 <h3 class="card-title" th:utext="#{screen.welcome.label.loginwith}" th:if="${delegatedAuthenticationProviderDominant == null}">Login with:</h3>
@@ -87,10 +103,18 @@
                     </ul>
                 </div>
             </div>
-            <div class="card-footer">
+
+          </div> <!-- end of col -->
+          <div class="col-md-6">
+
+            <div class="card-body">
                 <strong><span th:utext="#{screen.welcome.info.loginproviders}" /></strong>
             </div>
-        </div>
+
+          </div> <!-- end of col -->
+         </div> <!-- end of row -->
+
+         </div>
 
         <script>
             var redirectTo = $( "a[autoRedirect=true]" ).attr("href");

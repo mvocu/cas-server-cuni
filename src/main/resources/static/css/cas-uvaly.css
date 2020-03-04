@@ -78,9 +78,9 @@ header h1.navbar-text {
   border: 0;
 }
 
-#fm1 h3 {
+#fm1 h3, #registration h3, #list-providers h3 {
   font-size: 1.2em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 @media screen and (max-width: 480px) {
@@ -135,6 +135,17 @@ header h1.navbar-text {
   font-weight: bold;
 }
 
+.btn-submit:hover {
+  background-color: #629f40; 
+  border-color: 538536;
+}
+
+.btn-submit {
+  background-color: #7bbb57;
+  color: #fff;
+  border-color: #6cb148;
+}
+
 .list-help { 
   float: right;
   width: auto;
@@ -153,16 +164,24 @@ header h1.navbar-text {
   margin-right: 5px;
 }
 
-#list-providers h3 {
-  font-size: 1.1em;
-  font-weight: normal;
-}
-
-
 #cas #serviceui.serviceinfo {
   clear: both;
   margin-top: 10px;
   border: 1px dotted #7bbb57;
+}
+
+#serviceui.alert {
+  background-color:  #7bbb570f;
+  color: inherit;
+  border-color: #6cb148;
+}
+
+#serviceui.alert table {
+  width: 100%;
+}
+
+#serviceui.alert img {
+  max-width: 96px;
 }
 
 footer {
