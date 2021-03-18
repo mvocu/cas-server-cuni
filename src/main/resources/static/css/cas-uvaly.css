@@ -146,6 +146,16 @@ header h1.navbar-text {
   border-color: #6cb148;
 }
 
+.btn-oidc,
+.btn-saml2 {
+  background-color: #f7931e;
+}
+
+.btn-oidc:hover,
+.btn-saml2:hover {
+  background-color: #da7908;
+}
+
 .list-help { 
   float: right;
   width: auto;
