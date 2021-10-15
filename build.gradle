@@ -509,9 +509,14 @@ dependencies {
     }
     
 
-
-
-    
+    implementation "org.apereo.cas:cas-server-webapp-init:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-ldap:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-hazelcast-ticket-registry:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-saml:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-oidc:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-oauth-webflow:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
     
     developmentOnly "org.springframework.boot:spring-boot-devtools"
 }
