@@ -403,7 +403,8 @@ task getResource(group: "CAS", description: "Fetch a CAS resource and move it in
         def parent = file(toResourceFile).getParent()
         mkdir parent
 
-        Files.copy(Paths.get(resourceFile), Paths.get(toResourceFile), StandardCopyOption.REPLACE_EXISTING)
+	println "\nCopying from " + Paths.get(resourceFile) + " to " + Paths.get(projectDir.getCanonicalPath(), toResourceFile) + "\n"
+        Files.copy(Paths.get(resourceFile), Paths.get(projectDir.getCanonicalPath(), toResourceFile), StandardCopyOption.REPLACE_EXISTING)
         println "Copied file ${resourceFile} to ${toResourceFile}"
     }
 }
