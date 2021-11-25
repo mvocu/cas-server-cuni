@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+@import("cas.css");
+
+:root {
+	--cas-theme-primary-bg: rgb(21, 62, 80, 0.2);
+	--cas-theme-primary: #153e50;
+}
