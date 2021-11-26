@@ -42,10 +42,6 @@ h1, h2, h3, h4, h5, h6, h7 {
 	padding-right: 0px;
 }
 
-#content {
-	padding-top: 72px;	
-}
-
 .cas-footer {
     color: inherit;
     background: inherit;
@@ -60,10 +56,6 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 @media screen and (max-height: 728px) {
-
-	#content {
-		padding-top: 0px;	
-	}	
 	
 }
 
