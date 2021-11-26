@@ -54,12 +54,11 @@ h1, h2, h3, h4, h5, h6, h7 {
 @media screen and (max-height: 630px) {
 
 	.mdc-top-app-bar--fixed-adjust {
-		padding-top: 32px;
-		height: 100%;
+		padding-top: 56px;
 	}
 	
 	footer.cas-footer {
-		display: none;
+		display: none !important;
 	}
 }
 
