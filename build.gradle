@@ -65,7 +65,6 @@ repositories {
     }
 }
 
-apply plugin: "io.spring.dependency-management"
 apply plugin: "io.freefair.war-overlay"
 apply plugin: "war"
 apply plugin: "org.springframework.boot"
@@ -74,13 +73,16 @@ apply plugin: "io.freefair.lombok"
 apply from: rootProject.file("gradle/springboot.gradle")
 apply from: rootProject.file("gradle/jib.gradle")
 
-dependencyManagement {
-    imports {
-        mavenBom "org.apereo.cas:cas-server-support-bom:${project.'cas.version'}"
-    }
-}
 
 configurations.all {
+
+    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
+    exclude(group: "org.apache.logging.log4j", module: "log4j-web")
+    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
+    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
+
+    exclude(group: "org.apereo.cas", module: "cas-server-core-logging")
+
     resolutionStrategy {
         cacheChangingModulesFor 0, "seconds"
         cacheDynamicVersionsFor 0, "seconds"
@@ -90,17 +92,11 @@ configurations.all {
             failOnVersionConflict()
         }
     }
-
-    exclude(group: "org.apache.logging.log4j", module: "log4j-api")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-web")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-jcl")
-    exclude(group: "org.apache.logging.log4j", module: "log4j-slf4j-impl")
-
-    exclude(group: "org.apereo.cas", module: "cas-server-core-logging")
 }
 
 war {
     entryCompression = ZipEntryCompression.STORED
+    enabled = false
 }
 
 task run(group: "build", description: "Run the CAS web application in embedded container mode") {
@@ -475,12 +471,11 @@ cas.standard.js.file=/themes/${theme}/js/cas.js
 
 springBoot {
     buildInfo()
-
-    mainClassName = "org.apereo.cas.web.CasWebApplication"
-
-
-
-
+    mainClass = "org.apereo.cas.web.CasWebApplication"
+    
+    
+    
+    
 }
 
 sourceSets {
@@ -501,8 +496,13 @@ bootBuildImage {
     imageName = "${project.'containerImageOrg'}/${project.'containerImageName'}:${project.version}"
 }
 
-
 dependencies {
+    /**
+    * Do NOT modify the lines below or else you will risk breaking dependency management.
+    */
+    implementation enforcedPlatform("org.apereo.cas:cas-server-support-bom:${project.'cas.version'}")
+    implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+
     /**
      * CAS dependencies and modules may be listed here.
      *
@@ -535,10 +535,7 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-oauth-webflow:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
 
-    implementation "org.slf4j:slf4j-api:1.7.36"
-    implementation "ch.qos.logback:logback-classic:1.2.10"
-    
-    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    developmentOnly "org.springframework.boot:spring-boot-devtools:${project.springBootVersion}"
 }
 
 bootWar {
@@ -576,8 +573,8 @@ bootWar {
 
 
             provided = false
-            excludes = ["WEB-INF/lib/servlet-api-2*.jar"]
-            
+            excludes = ["WEB-INF/lib/servlet-api-2*.jar", "WEB-INF/lib/log4j-slf4j-impl-*.jar", "WEB-INF/lib/log4j-api-*.jar", "WEB-INF/lib/log4j-web-*.jar", "WEB-INF/lib/log4j-jcl-*.jar" ]
+
             /*
             excludes = ["WEB-INF/lib/somejar-1.0*"]
             enableCompilation = true
