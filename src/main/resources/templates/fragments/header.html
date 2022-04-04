@@ -14,30 +14,33 @@
 <div th:fragment="header">
 
     <header id="app-bar" class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4 shadow-sm">
-        <nav class="mdc-top-app-bar__row navbar navbar-dark bg-dark">
+        <nav class="mdc-top-app-bar__row navbar navbar-light bg-white">
             <div class="container-fluid container-fluid d-flex align-items-center justify-content-between">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <button th:if="${'true' == #strings.defaultString(#themes.code('cas.drawer-menu.enabled'), 'true')}"
-                        class="mdc-icon-button mdc-top-app-bar__navigation-icon  btn btn-outline-light"
+                        class="mdc-icon-button mdc-top-app-bar__navigation-icon  btn btn-outline-dark"
                         data-bs-toggle="offcanvas"
                         data-bs-target="#app-drawer">
                         <span class="mdi mdi-menu fa fa-bars"></span>
                         <span class="visually-hidden">menu</span>
                     </button>
+<!-- use the same section for menu button and title
                 </section>
                 <section class="mdc-top-app-bar__section">
-                    <span class="cas-brand mx-auto">
+-->
+                    <span class="cas-brand mdc-top-app-bar__title _DISABLED_mx-auto">
                         <span class="visually-hidden" th:text="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}">CAS</span>
                         <img id="cas-logo" class="cas-logo"
                             th:title="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}"
                             th:src="@{${#strings.defaultString(#themes.code('cas.logo.file'), '/images/cas-logo.png')}}"
                             />
                     </span>
+                    <span class="mdc-top-app-bar__title" th:text="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}">CAS</span>
                 </section>
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
                     <button id="cas-notifications-menu"
                             th:if="${'true' == #strings.defaultString(#themes.code('cas.notifications-menu.enabled'), 'true')}"
-                            class="mdc-icon-button mdc-top-app-bar__action-item cas-notification-toggle btn btn-outline-light"
+                            class="mdc-icon-button mdc-top-app-bar__action-item cas-notification-toggle btn btn-outline-dark"
                             aria-label="Bookmark this page"
                             data-bs-toggle="modal"
                             data-bs-target="#cas-notification-dialog">

@@ -24,7 +24,7 @@
 :root {
 	--cas-theme-primary-bg: rgb(21, 62, 80, 0.2);
 	--cas-theme-primary: #1b304a;
-	--mdc-theme-primary: #1b304a;
+	--mdc-theme-primary: var(--cas-theme-primary, #1b304a); 
 	
 	--cas-theme-primary-title-color: #cc2c32;
 }
@@ -37,6 +37,19 @@ h1, h2, h3, h4, h5, h6, h7 {
     color: var(--cas-theme-primary-title-color);
 }
 
+#app-bar {
+    background-color: white;
+    color: var(--mdc-theme-text-primary-on-light);
+}
+
+#app-bar .btn {
+    color: var(--mdc-theme-text-primary-on-light);
+}
+
+.mdc-top-app-bar--fixed-adjust {
+    padding-top: 64px;
+}
+
 #main-content {
 	padding-left: 0px;
 	padding-right: 0px;
@@ -47,16 +60,24 @@ h1, h2, h3, h4, h5, h6, h7 {
     background: inherit;
 }
 
+.mw-8 {
+    max-width: 680px;
+}
+
 @media screen and (max-height: 630px) {
 
 	footer.cas-footer {
 		display: none !important;
 	}
 
+	.mdc-top-app-bar--fixed-adjust {
+    	 	padding-top: 42px;
+	}
+
 }
 
-@media screen and (max-height: 728px) {
-	
+@media screen and (max-height: 730px) {
+
 }
 
 @media screen and (max-width: 480px) {
