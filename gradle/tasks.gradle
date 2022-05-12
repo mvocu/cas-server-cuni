@@ -43,7 +43,6 @@ task executable(type: Exec, group: "CAS", description: "Run the CAS web applicat
     }
 }
 
-
 task debug(group: "CAS", description: "Debug the CAS web application in embedded mode on port 5005") {
     dependsOn 'build'
     doLast {
@@ -125,7 +124,7 @@ task createKeystore(group: "CAS", description: "Create CAS keystore") {
         def storeType = project.getProperty("storeType")
         def keystorePath = "$certDir/$serverKeyStore"
         def serverCert = "$certDir/$exportedServerCert"
-
+        
         mkdir certDir
 
         def dn = "CN=cas.example.org,OU=Example,OU=Org,C=US"
@@ -183,7 +182,6 @@ task copyCasConfiguration(type: Copy, group: "CAS",
         new File('/etc/cas/config').mkdirs()
     }
 }
-
 
 def tomcatDirectory = "${buildDir}/apache-tomcat-${tomcatVersion}"
 project.ext."tomcatDirectory" = tomcatDirectory
@@ -258,7 +256,7 @@ task listTemplateViews(group: "CAS", description: "List all CAS views") {
         fileTree(explodedResourcesDir).matching {
             include "**/*.html"
         }
-        .collect {
+        .collect { 
             return it.path.replace(explodedResourcesDir, "")
         }
         .toSorted()
@@ -338,7 +336,8 @@ task getResource(group: "CAS", description: "Fetch a CAS resource and move it in
         def parent = file(toResourceFile).getParent()
         mkdir parent
 
-        Files.copy(Paths.get(resourceFile), Paths.get(toResourceFile), StandardCopyOption.REPLACE_EXISTING)
+	println "\nCopying from " + Paths.get(resourceFile) + " to " + Paths.get(projectDir.getCanonicalPath(), toResourceFile) + "\n"
+        Files.copy(Paths.get(resourceFile), Paths.get(projectDir.getCanonicalPath(), toResourceFile), StandardCopyOption.REPLACE_EXISTING)
         println "Copied file ${resourceFile} to ${toResourceFile}"
     }
 }
@@ -377,7 +376,7 @@ task createTheme(group: "CAS", description: "Create theme directory structure in
                         "${theme}" {
                             fragments {
 
-                            }
+                            } 
                         }
                     }
 
@@ -389,4 +388,3 @@ cas.standard.js.file=/themes/${theme}/js/cas.js
         }
     }
 }
-
