@@ -24,10 +24,8 @@
                         <span class="mdi mdi-menu fa fa-bars"></span>
                         <span class="visually-hidden">menu</span>
                     </button>
-<!-- use the same section for menu button and title
                 </section>
                 <section class="mdc-top-app-bar__section">
--->
                     <span class="cas-brand mdc-top-app-bar__title _DISABLED_mx-auto">
                         <span class="visually-hidden" th:text="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}">CAS</span>
                         <img id="cas-logo" class="cas-logo"
@@ -35,7 +33,9 @@
                             th:src="@{${#strings.defaultString(#themes.code('cas.logo.file'), '/images/cas-logo.png')}}"
                             />
                     </span>
-                    <span class="mdc-top-app-bar__title" th:text="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}">CAS</span>
+                    <span class="mdc-top-app-bar__title" th:text="${#strings.defaultString(#themes.code('cas.theme.title'), 'SSO')}">SSO<br>
+                    	<span class="mdc-top-app-bar__subtitle" th:text="${#strings.defaultString(#themes.code('cas.theme.name'), 'CAS')}">CAS</span>
+                    </span>
                 </section>
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
                     <button id="cas-notifications-menu"

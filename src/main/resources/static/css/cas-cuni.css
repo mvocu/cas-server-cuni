@@ -50,6 +50,15 @@ h1, h2, h3, h4, h5, h6, h7 {
     padding-top: 64px;
 }
 
+.mdc-top-app-bar__subtitle {
+    display: inline-block;
+    position: relative;
+    bottom: 1em;
+    overflow: visible;
+    font-size: small;
+    color: var(--cas-theme-primary-title-color);
+}
+
 #main-content {
 	padding-left: 0px;
 	padding-right: 0px;
