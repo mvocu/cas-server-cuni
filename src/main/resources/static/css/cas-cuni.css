@@ -23,7 +23,7 @@
 
 :root {
 	--cas-theme-primary-bg: rgb(21, 62, 80, 0.2);
-	--cas-theme-primary: #1b304a;
+	--cas-theme-primary: #a22428; /* #1b304a; */
 	--mdc-theme-primary: var(--cas-theme-primary, #1b304a); 
 	
 	--cas-theme-primary-title-color: #cc2c32;
@@ -50,10 +50,20 @@ h1, h2, h3, h4, h5, h6, h7 {
     padding-top: 64px;
 }
 
+.mdc-top-app-bar__title {
+    padding-left: 1em;
+}
+
+.mdc-top-app-bar__title.cas-brand {
+    overflow: visible;
+    padding-left: 6px;
+}
+
 .mdc-top-app-bar__subtitle {
-    display: inline-block;
+    display: block;
     position: relative;
     bottom: 1em;
+    height: 1.5em;
     overflow: visible;
     font-size: small;
     color: var(--cas-theme-primary-title-color);
@@ -90,5 +100,13 @@ h1, h2, h3, h4, h5, h6, h7 {
 }
 
 @media screen and (max-width: 480px) {
+
+.mdc-top-app-bar__title {
+    font-size: 1rem;
+}
+
+.mdc-top-app-bar__subtitle {
+    font-size: x-small;
+}
 
 }
