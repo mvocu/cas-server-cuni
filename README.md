@@ -7,7 +7,7 @@ WAR Overlay Type: `cas-overlay`
 # Versions
    
 
-- CAS Server `6.5.0`
+- CAS Server `6.6.2`
 - JDK `11`
                      
 # Build
@@ -88,7 +88,9 @@ On a successful deployment via the following methods, the server will be availab
   
 ## Executable WAR
 
-Run the server web application as an executable WAR.
+Run the server web application as an executable WAR. Note that running an executable WAR requires CAS to use an embedded container such as Apache Tomcat, Jetty, etc.
+
+The current servlet container is specified as `-tomcat`.
 
 ```bash
 java -jar build/libs/cas.war
@@ -128,12 +130,10 @@ The following strategies outline how to build and deploy CAS Docker images.
 
 ## Jib
 
-The overlay embraces the [Jib Gradle Plugin](https://github.com/GoogleContainerTools/jib) to provide easy-to-use out-of-the-box tooling for
-building CAS docker images. Jib is an open-source Java containerizer from Google that lets Java developers build containers using the tools
-they know. It is a container image builder that handles all the steps of packaging your application into a container image. It does
-not require you to write a Dockerfile or have Docker installed, and it is directly integrated into the overlay.
+The overlay embraces the [Jib Gradle Plugin](https://github.com/GoogleContainerTools/jib) to provide easy-to-use out-of-the-box tooling for building CAS docker images. Jib is an open-source Java containerizer from Google that lets Java developers build containers using the tools they know. It is a container image builder that handles all the steps of packaging your application into a container image. It does not require you to write a Dockerfile or have Docker installed, and it is directly integrated into the overlay.
 
 ```bash
+# Running this task requires that you have Docker installed and running.
 ./gradlew build jibDockerBuild
 ```
 

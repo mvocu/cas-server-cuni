@@ -121,7 +121,7 @@ bootWar {
 
 
             provided = false
-            excludes = ["WEB-INF/lib/servlet-api-2*.jar"]
+            excludes = ["WEB-INF/lib/servlet-api-2*.jar", "WEB-INF/lib/log4j-slf4j-impl-*.jar", "WEB-INF/lib/log4j-api-*.jar", "WEB-INF/lib/log4j-web-*.jar", "WEB-INF/lib/log4j-jcl-*.jar" ]
 
             /*
             excludes = ["WEB-INF/lib/somejar-1.0*"]
