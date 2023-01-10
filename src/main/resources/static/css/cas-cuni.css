@@ -1,5 +1,12 @@
 @import "cas.css";
 
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: 100 400;
+    font-style: normal;
+}
+
 /* original settings in imported cas.css:
 :root {
     --cas-theme-primary: #153e50;
@@ -85,6 +92,10 @@ div#content {
 
 .mw-8 {
     max-width: 680px;
+}
+
+.banner {
+    margin-bottom: 3rem;
 }
 
 @media screen and (max-height: 630px) {

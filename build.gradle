@@ -150,6 +150,7 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-logback:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-json-service-registry:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-ldap:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-jdbc:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-hazelcast-ticket-registry:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-saml:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-oidc:${project.'cas.version'}"
@@ -169,6 +170,7 @@ dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools:${project.springBootVersion}"
 
     /* these are required for compiling overridden classes from Simple MFA */
+    /*
     implementation "org.apereo.cas:cas-server-support-simple-mfa-core"
     implementation "org.apereo.cas:cas-server-support-bucket4j-core"
     implementation "org.apereo.cas:cas-server-core-api-webflow"
@@ -180,6 +182,7 @@ dependencies {
     implementation "org.apereo.cas:cas-server-core-webflow-mfa-api"
     implementation "org.apereo.cas:cas-server-core-web-api"
     implementation "org.apereo.cas:cas-server-core-authentication-mfa-api"
+    */
    
 }
 
