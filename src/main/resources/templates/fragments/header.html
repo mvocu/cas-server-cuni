@@ -40,7 +40,17 @@
                     	<span class="mdc-top-app-bar__subtitle" th:text="${#strings.defaultString(#messages.msgOrNull('cas.theme.name'), 'CAS')}">CAS</span>
                     </span>
                 </section>
-                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder)}">
+		    <div class="mdc-touch-target-wrapper" th:unless="${'en' == #locale.language or #request.getRequestURI().contains('logout')}">
+  			<a class="material-icons mdc-icon-button mdc-top-app-bar_action-item btn" th:href="${urlBuilder?.fromCurrentRequest()?.replaceQueryParam('locale', 'en')?.build(true)?.toUriString()}">
+    			   <div class="mdc-icon-button__ripple"></div><img src="images/en.jpg" th:src="@{/images/en.jpg}" /><div class="mdc-icon-button__touch"></div>
+                        </a>
+  		    </div>
+                    <div class="mdc-touch-target-wrapper" th:unless="${'cs' == #locale.language or #request.getRequestURI().contains('logout')}">
+                        <a class="material-icons mdc-icon-button mdc-top-app-bar_action-item btn" th:href="${urlBuilder?.fromCurrentRequest()?.replaceQueryParam('locale', 'cs')?.build(true)?.toUriString()}">
+                           <div class="mdc-icon-button__ripple"></div><img src="images/cz.jpg" th:src="@{/images/cz.jpg}" /><div class="mdc-icon-button__touch"></div>
+                        </a>
+                    </div>
                     <button id="cas-notifications-menu"
                             th:if="${'true' == #strings.defaultString(#themes.code('cas.notifications-menu.enabled'), 'true')}"
                             class="mdc-icon-button mdc-top-app-bar__action-item cas-notification-toggle btn btn-outline-dark"

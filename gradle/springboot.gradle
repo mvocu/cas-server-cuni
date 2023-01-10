@@ -1,5 +1,19 @@
 apply plugin: "org.springframework.boot"
 
+repositories {
+    maven {
+        url "https://repo.spring.io/milestone"
+    }
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+        mavenContent { snapshotsOnly() }
+    }
+    maven { url 'https://build.shibboleth.net/nexus/content/repositories/releases/' }
+}
+
 configurations {
     bootRunConfig.extendsFrom compileClasspath
 }
@@ -55,11 +69,6 @@ bootRun {
     list.add("java.management/sun.management=ALL-UNNAMED")
     list.add("--add-opens")
     list.add("jdk.management/com.sun.management.internal=ALL-UNNAMED")
-
-    list.add("-XX:+UnlockExperimentalVMOptions")
-    list.add("-XX:+EnableJVMCI")
-    list.add("-XX:+UseJVMCICompiler")
-
     list.add("-Xrunjdwp:transport=dt_socket,address=5000,server=y,suspend=n")
 
     jvmArgs = list
@@ -68,5 +77,60 @@ bootRun {
     args = appArgList
 }
 
+springBoot {
+    buildInfo()
+    mainClass = "org.apereo.cas.web.CasWebApplication"
+    
+    
+    
+    
+}
 
+bootWar {
+    def executable = project.hasProperty("executable") && Boolean.valueOf(project.getProperty("executable"))
+    if (executable) {
+        logger.info "Including launch script for executable WAR artifact"
+        launchScript()
+    } else {
+        logger.info "WAR artifact is not marked as an executable"
+    }
+
+    archiveFileName = "cas.war"
+    archiveBaseName = "cas"
+    
+    entryCompression = ZipEntryCompression.STORED
+
+    /*
+        attachClasses = true
+        classesClassifier = 'classes'
+        archiveClasses = true
+    */
+
+    overlays {
+        /*
+            https://docs.freefair.io/gradle-plugins/current/reference/#_io_freefair_war_overlay
+            Note: The "excludes" property is only for files in the war dependency.
+            If a jar is excluded from the war, it could be brought back into the final war as a dependency
+            of non-war dependencies. Those should be excluded via normal gradle dependency exclusions.
+        */
+        cas {
+            from "org.apereo.cas:cas-server-webapp${project.appServer}:${project.'cas.version'}@war"
+
+
+
+
+
+            provided = false
+            excludes = ["WEB-INF/lib/servlet-api-2*.jar", "WEB-INF/lib/log4j-slf4j-impl-*.jar", "WEB-INF/lib/log4j-api-*.jar", "WEB-INF/lib/log4j-web-*.jar", "WEB-INF/lib/log4j-jcl-*.jar" ]
+
+            /*
+            excludes = ["WEB-INF/lib/somejar-1.0*"]
+            enableCompilation = true
+            includes = ["*.xyz"]
+            targetPath = "sub-path/bar"
+            skip = false
+            */
+        }
+    }
+}
 
