@@ -32,7 +32,6 @@
     --cas-theme-facebook-color: #3B5998;
     --atlassian-theme-primary: #0747a6;
     --mdc-theme-primary: var(--cas-theme-primary, #153e50);
-    --mdc-typography-font-family: Nunito;
 }
 */
 
@@ -42,6 +41,8 @@
 	--mdc-theme-primary: var(--cas-theme-primary, #1b304a); 
 	
 	--cas-theme-primary-title-color: #cc2c32;
+
+        --mdc-typography-font-family: Nunito;
 }
 
 body {
