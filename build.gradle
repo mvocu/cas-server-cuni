@@ -172,29 +172,7 @@ dependencies {
     compileOnly "org.springframework.boot:spring-boot:${project.springBootVersion}"
 
     compileOnly "org.apereo.cas:cas-server-support-simple-mfa-core"
-    compileOnly "org.apereo.cas:cas-server-support-bucket4j-core"
-    compileOnly "org.apereo.cas:cas-server-core-api-webflow"
-    compileOnly "org.apereo.cas:cas-server-core-api-util"
-    compileOnly "org.apereo.cas:cas-server-core-notifications"
-    compileOnly "org.apereo.cas:cas-server-core-util-api"
-    compileOnly "org.apereo.cas:cas-server-core-webflow-api"
-    compileOnly "org.apereo.cas:cas-server-core-webflow-mfa"
-    compileOnly "org.apereo.cas:cas-server-core-webflow-mfa-api"
-    compileOnly "org.apereo.cas:cas-server-core-web-api"
-    compileOnly "org.apereo.cas:cas-server-core-authentication-mfa-api"
-    
-    /*
-    implementation project(":core:cas-server-core-authentication-api")
-    implementation project(":core:cas-server-core-authentication-mfa-api")
-    implementation project(":core:cas-server-core-util-api")
-    implementation project(":core:cas-server-core-tickets-api")
-    implementation project(":core:cas-server-core-configuration-api")
-    implementation project(":core:cas-server-core-webflow-api")
-    implementation project(":core:cas-server-core-webflow-mfa")
-    implementation project(":core:cas-server-core-notifications")
-    implementation project(":core:cas-server-core-webflow-mfa-api")
-    implementation project(":core:cas-server-core-web-api")
-    */
+	compileOnly "org.apereo.cas:cas-server-support-webauthn-core"
    
 }
 
