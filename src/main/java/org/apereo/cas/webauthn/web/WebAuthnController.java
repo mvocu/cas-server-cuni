@@ -102,7 +102,7 @@ public class WebAuthnController {
      * @throws Exception the exception
      */
     @PostMapping(value = WEBAUTHN_ENDPOINT_REGISTER, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     public ResponseEntity<Object> startRegistration(
         @NonNull
         @RequestParam("username")
@@ -143,7 +143,7 @@ public class WebAuthnController {
      * @throws Exception the exception
      */
     @PostMapping(value = WEBAUTHN_ENDPOINT_REGISTER + WEBAUTHN_ENDPOINT_FINISH, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     public ResponseEntity<Object> finishRegistration(
         @RequestBody
         final String responseJson) throws Exception {
