@@ -61,8 +61,7 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-center flex-column align-items-center mdc-card mdc-card-content card mw-8 mt-3">
-        <section class="card-body">
+        <div class="d-flex justify-content-center flex-column align-items-center mdc-card mdc-card-content card p-4 mw-8 mt-3 m-auto">
             <h2 id="status" th:utext="#{screen.authentication.webauthn.register.title}">Register Device</h2>
             <div id="messages">
                 <p th:utext="#{screen.authentication.webauthn.register.desc}">Assign a friendly-name to your FIDO2-enabled device and then register it with CAS for multifactor
@@ -141,7 +140,6 @@
                 -->
             </div>
 
-		</section>
         </div>
 
         <form method="POST" class="fm-v clearfix" id="form" th:action="@{/login}">
@@ -163,6 +161,7 @@
                 register(username, displayName, credentialNickname, csrfToken);
             }, false);
 
+			/*
             var btnResident = document.getElementById('registerDiscoverableCredentialButton');
             btnResident.addEventListener('click', function (event) {
                 const username = '[[${principal.id}]]';
@@ -170,6 +169,7 @@
                 const credentialNickname = $('#credentialNickname').val();
                 register(username, displayName, credentialNickname, csrfToken, true);
             }, false);
+            */
 
         </script>
 
