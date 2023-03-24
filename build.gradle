@@ -164,6 +164,10 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-gauth-ldap:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-simple-mfa:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-trusted-mfa:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-spnego-webflow:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
+
+    implementation files("${projectDir}/lib/jcifs-ext.jar")
 
     implementation "org.eclipse.jetty:jetty-util:10.0.7"
 
