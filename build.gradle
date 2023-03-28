@@ -178,5 +178,6 @@ dependencies {
     compileOnly "org.apereo.cas:cas-server-support-simple-mfa-core"
 	compileOnly "org.apereo.cas:cas-server-support-webauthn-core"
     compileOnly "org.apereo.cas:cas-server-support-spnego"
+    compileOnly "org.apereo.cas:cas-server-core-authentication-api"
 }
 
