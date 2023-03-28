@@ -179,5 +179,6 @@ dependencies {
 	compileOnly "org.apereo.cas:cas-server-support-webauthn-core"
     compileOnly "org.apereo.cas:cas-server-support-spnego"
     compileOnly "org.apereo.cas:cas-server-core-authentication-api"
+    compileOnly "org.apereo.cas:cas-server-core-configuration-api"
 }
 
