@@ -15,7 +15,24 @@
             <h2 th:utext="#{cas.mfa.providerselection.title}" class="card-title">Multifactor Authentication Provider Selection</h2>
             <hr>
             <div class="card-text">
-                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider)}" class="border-bottom py-4">
+                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${#lists.contains(cuniMfaPreferredHandlers, provider)}" class="border-bottom py-4">
+                    <form name="fm1" method="post" th:action="@{/login}">
+                        <h4 class="d-flex align-items-center">
+                            <i class="mdi mdi-laptop fas fa-laptop me-2"></i>
+                            <span th:utext="#{'cas.mfa.providerselection.' + ${provider}}">Provider name goes
+                                here</span>
+                        </h4>
+                        <p th:utext="#{'cas.mfa.providerselection.' + ${provider} + '.notes'}">Provider description goes
+                            here</p>
+                        <button class="mdc-button mdc-button--raised btn btn-primary" value="Use">
+                            <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.use}">Use</span>
+                        </button>
+                        <input type="hidden" name="execution" th:value="${flowExecutionKey}" />
+                        <input type="hidden" name="mfaProvider" th:value="${provider}" />
+                        <input type="hidden" name="_eventId" value="submit" />
+                    </form>
+                </div>
+                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${not #lists.contains(cuniMfaPreferredHandlers, provider) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="visually-hidden border-bottom py-4">
                     <form name="fm1" method="post" th:action="@{/login}">
                         <h4 class="d-flex align-items-center">
                             <i class="mdi mdi-laptop fas fa-laptop me-2"></i>
