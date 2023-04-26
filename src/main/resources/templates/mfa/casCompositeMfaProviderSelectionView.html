@@ -32,7 +32,8 @@
                         <input type="hidden" name="_eventId" value="submit" />
                     </form>
                 </div>
-                <a class="mdc-button mdc-button-outline mt-4" id="other" name="other"
+                <a th:if="${not #lists.isEmpty(cuniMfaPreferredHandlers))}"
+                   class="mdc-button mdc-button-outline mt-4" id="other" name="other"
                    onclick="$('.should-hide').show(); $(this).hide()">
                     <i class="mdi mdi-arrow-down-drop-circle fas fa-caret-down"></i>
                     <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.other}">Use other method</span>
