@@ -1,4 +1,4 @@
-package org.apereo.cas.config;
+package org.apereo.cas.configuration;
 
 //import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
