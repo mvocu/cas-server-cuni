@@ -32,7 +32,11 @@
                         <input type="hidden" name="_eventId" value="submit" />
                     </form>
                 </div>
-                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${not #lists.contains(cuniMfaPreferredHandlers, provider) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="visually-hidden border-bottom py-4">
+                <a class="mdc-button btn  mt-4" id="other" name="other"
+                   onclick="$('.should-hide').show(); $(this).hide()">
+                    <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.other}">Use other method</span>
+                </a>
+                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${not #lists.contains(cuniMfaPreferredHandlers, provider) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="should-hide border-bottom py-4">
                     <form name="fm1" method="post" th:action="@{/login}">
                         <h4 class="d-flex align-items-center">
                             <i class="mdi mdi-laptop fas fa-laptop me-2"></i>
@@ -54,6 +58,9 @@
                     <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.cancel}">Cancel</span>
                 </a>
             </div>
+            <script>
+                $(".should-hide").hide();
+            </script>
         </div>
     </main>
 </body>
