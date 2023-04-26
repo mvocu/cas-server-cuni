@@ -463,7 +463,7 @@ function register(username, displayName, credentialNickname, csrfToken,
 
                 if (!data.attestationTrusted) {
                     addMessage("Attestation cannot be trusted.");
-		    return rejected({ name: 'AttestationNotTrusted', message: 'Attestation cannot be trusted.'});
+		            return rejected({ name: 'AttestationNotTrusted', message: 'Attestation cannot be trusted.'});
                 } else {
                     setTimeout(function () {
                         $('#sessionToken').val(session.sessionToken);
