@@ -461,7 +461,7 @@ function register(username, displayName, credentialNickname, csrfToken,
                     showDeviceInfo(nicknameInfo);
                 }
 
-                if (!data.attestationTrusted) {
+                if (0 && !data.attestationTrusted) {
                     addMessage("Attestation cannot be trusted.");
 		            return rejected({ name: 'AttestationNotTrusted', message: 'Attestation cannot be trusted.'});
                 } else {
@@ -539,7 +539,7 @@ function authenticate(username = null, getRequest = getAuthenticateRequest) {
                 addDeviceAttributeAsRow("Credential Nickname", reg.credentialNickname);
                 addDeviceAttributeAsRow("Registration Date", reg.registrationTime);
                 addDeviceAttributeAsRow("Session Token", data.sessionToken);
-                if (reg.attestationMetadata.deviceProperties) {
+                if (reg.attestationMetadata && reg.attestationMetadata.deviceProperties) {
                     addDeviceAttributeAsRow("Device Id", reg.attestationMetadata.deviceProperties.deviceId);
                     addDeviceAttributeAsRow("Device Name", reg.attestationMetadata.deviceProperties.displayName);
     
