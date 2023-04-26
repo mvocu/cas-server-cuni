@@ -32,8 +32,9 @@
                         <input type="hidden" name="_eventId" value="submit" />
                     </form>
                 </div>
-                <a class="mdc-button btn  mt-4" id="other" name="other"
+                <a class="mdc-button mdc-button-outline mt-4" id="other" name="other"
                    onclick="$('.should-hide').show(); $(this).hide()">
+                    <i class="mdi mdi-arrow-down-drop-circle fas fa-caret-down"></i>
                     <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.other}">Use other method</span>
                 </a>
                 <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${not #lists.contains(cuniMfaPreferredHandlers, provider) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="should-hide border-bottom py-4">
