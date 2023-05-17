@@ -181,5 +181,16 @@ dependencies {
     compileOnly "org.apereo.cas:cas-server-support-spnego"
     compileOnly "org.apereo.cas:cas-server-core-authentication-api"
     compileOnly "org.apereo.cas:cas-server-core-configuration-api"
+    compileOnly "org.apereo.cas:cas-server-support-pac4j-core-clients"
+
+   /* these are for yet uncommited changes */
+    compileOnly "org.apereo.cas:cas-server-support-webauthn"
+    compileOnly "org.apereo.cas:cas-server-core-util"
+    compileOnly "org.apereo.cas:cas-server-core-web-api"
+    compileOnly "org.apereo.cas:cas-server-support-webauthn-core-webflow"
+    compileOnly "org.apereo.cas:cas-server-core-webflow-api"
+    compileOnly "org.apereo.cas:cas-server-core-authentication-mfa-api"
+    compileOnly "org.springframework.security:spring-security-config"
+
 }
 
