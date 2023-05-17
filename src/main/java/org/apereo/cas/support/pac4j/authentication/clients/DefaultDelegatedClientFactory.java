@@ -1,5 +1,7 @@
 package org.apereo.cas.support.pac4j.authentication.clients;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.apereo.cas.authentication.CasSSLContext;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 
@@ -16,7 +18,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import java.util.Collection;
 import java.util.Optional;
 
-import lombok.val;
 
 /**
  * This is {@link DefaultDelegatedClientFactory}.
@@ -24,6 +25,7 @@ import lombok.val;
  * @author Misagh Moayyed
  * @since 5.3.0
  */
+@Slf4j
 public class DefaultDelegatedClientFactory extends BaseDelegatedClientFactory implements DisposableBean {
 
     public DefaultDelegatedClientFactory(
