@@ -25,15 +25,13 @@ public class NIAUtils {
      */
     public static List<XSAny> buildNIARequestExtension(Pac4jSamlClientProperties properties) {
         RequestedAttributes requestedAttributesElement = OpenSAMLUtils.buildSAMLObject(RequestedAttributes.class);
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.PERSON_IDENTIFIER(true, true));
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_GIVEN_NAME(true, true));
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
-        // convert element to requested type
         XSAny anyElement = (XSAny) OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(requestedAttributesElement.getElementQName());
-        LOGGER.debug("Adding list of requested attributes for NIA: [{}]", requestedAttributesElement.getRequestedAttributes());
-        anyElement.getUnknownXMLObjects().addAll(requestedAttributesElement.getRequestedAttributes());
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.PERSON_IDENTIFIER(true, true));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_GIVEN_NAME(true, true));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
+        // convert element to requested type
         return List.of(anyElement);
     }
 }
