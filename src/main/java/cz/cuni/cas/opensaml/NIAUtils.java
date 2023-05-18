@@ -34,8 +34,9 @@ public class NIAUtils {
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
         return List.of(requestedAttributesElement).stream()
                 .map( element -> {
-                    return (XSAny)OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getDOM());
+                    XSAny anyElement = (XSAny)OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getElementQName());
+                    anyElement.setDOM(element.getDOM());
                 }).collect(Collectors.toList());
-    }
+
 
 }
