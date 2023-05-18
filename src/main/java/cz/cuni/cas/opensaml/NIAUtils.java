@@ -25,11 +25,11 @@ public class NIAUtils {
      */
     public static List<XSAny> buildNIARequestExtension(Pac4jSamlClientProperties properties) {
         RequestedAttributes requestedAttributesElement = OpenSAMLUtils.buildSAMLObject(RequestedAttributes.class);
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.PERSON_IDENTIFIER());
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_GIVEN_NAME());
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME());
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.DATE_OF_BIRTH());
-        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS());
+        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.PERSON_IDENTIFIER(true, true));
+        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_GIVEN_NAME(true, true));
+        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
+        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
+        requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
         return List.of((XSAny) requestedAttributesElement);
     }
 
