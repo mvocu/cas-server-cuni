@@ -35,7 +35,7 @@ public class NIAUtils {
         return List.of(requestedAttributesElement).stream()
                 .map(element -> {
                     XSAny anyElement = (XSAny) OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getElementQName());
-                    anyElement.setDOM(element.getDOM());
+                    anyElement.getUnknownXMLObjects().addAll(element.getRequestedAttributes());
                     return anyElement;
                 }).collect(Collectors.toList());
 
