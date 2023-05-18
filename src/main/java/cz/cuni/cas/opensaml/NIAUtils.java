@@ -2,12 +2,14 @@ package cz.cuni.cas.opensaml;
 
 import org.apereo.cas.configuration.model.support.pac4j.saml.Pac4jSamlClientProperties;
 import org.opensaml.core.xml.schema.XSAny;
+import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.saml.saml2.core.Attribute;
 import se.litsec.eidas.opensaml.ext.RequestedAttribute;
 import se.litsec.eidas.opensaml.ext.RequestedAttributeTemplates;
 import se.litsec.eidas.opensaml.ext.RequestedAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NIAUtils {
 
@@ -30,7 +32,10 @@ public class NIAUtils {
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
-        return List.of((XSAny) requestedAttributesElement);
+        return List.of(requestedAttributesElement).stream()
+                .map( element -> {
+                    return (XSAny)OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getDOM());
+                }).collect(Collectors.toList());
     }
 
 }
