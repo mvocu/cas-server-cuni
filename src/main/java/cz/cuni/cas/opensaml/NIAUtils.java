@@ -11,12 +11,12 @@ import java.util.List;
 @Slf4j
 public class NIAUtils {
 
-    public interface NIAConstants {
-
-        public static final String STORK_ATTRIBUTE_NS = "http://www.stork.gov.eu/1.0/";
-
-        public static final String NIA_ATTRIBUTE_NS = "http://schemas.eidentita.cz/moris/2016/identity/claims/";
-    }
+    public static final String NIA_ATTRIBUTE_EMAIL = "http://www.stork.gov.eu/1.0/eMail";
+    public static final String NIA_ATTRIBUTE_PHONE = "http://schemas.eidentita.cz/moris/2016/identity/claims/phonenumber";
+    public static final String NIA_ATTRIBUTE_TRADRESAID = "http://schemas.eidentita.cz/moris/2016/identity/claims/tradresaid";
+    public static final String NIA_ATTRIBUTE_LOA = "http://eidas.europa.eu/LoA";
+    public static final String NIA_ATTRIBUTE_IDTYPE = "http://schemas.eidentita.cz/moris/2016/identity/claims/idtype";
+    public static final String NIA_ATTRIBUTE_IDNUMBER = "http://schemas.eidentita.cz/moris/2016/identity/claims/idnumber";
 
     /**
      *
@@ -26,12 +26,21 @@ public class NIAUtils {
     public static List<XSAny> buildNIARequestExtension(Pac4jSamlClientProperties properties) {
         RequestedAttributes requestedAttributesElement = OpenSAMLUtils.buildSAMLObject(RequestedAttributes.class);
         XSAny anyElement = (XSAny) OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(requestedAttributesElement.getElementQName());
+
+        /* eIDAS attributes */
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.PERSON_IDENTIFIER(true, true));
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_GIVEN_NAME(true, true));
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
-        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
-        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
-        // convert element to requested type
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, false));
+        /* NIA attributes */
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_EMAIL, "email", null, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_PHONE, "phone", null, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_TRADRESAID, "TRAdresaID", null, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_LOA, "loa", null, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_IDTYPE, "idtype", null, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_IDNUMBER, "idnumber", null, false));
+
         return List.of(anyElement);
     }
 }
