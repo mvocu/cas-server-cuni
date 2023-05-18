@@ -33,10 +33,11 @@ public class NIAUtils {
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, true));
         requestedAttributesElement.getRequestedAttributes().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, true));
         return List.of(requestedAttributesElement).stream()
-                .map( element -> {
-                    XSAny anyElement = (XSAny)OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getElementQName());
+                .map(element -> {
+                    XSAny anyElement = (XSAny) OpenSAMLUtils.getBuilder(XSAny.TYPE_NAME).buildObject(element.getElementQName());
                     anyElement.setDOM(element.getDOM());
+                    return anyElement;
                 }).collect(Collectors.toList());
 
-
+    }
 }
