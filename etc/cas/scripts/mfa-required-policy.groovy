@@ -4,6 +4,9 @@ import org.apache.http.client.utils.URIBuilder
 import org.apereo.cas.authentication.AuthenticationException
 import org.apereo.cas.authentication.MultifactorAuthenticationProviderAbsentException
 import org.apereo.cas.authentication.MultifactorAuthenticationRequiredException
+import org.apereo.cas.util.spring.ApplicationContextProvider
+
+import org.springframework.webflow.execution.RequestContextHolder
 
 def String run(final Object... args) {
     def service = args[0]
@@ -15,8 +18,13 @@ def String run(final Object... args) {
     def mfaRequired = false
     def mfaAvailable = false
 
+    def flowScope = RequestContextHolder.getRequestContext().getFlowScope()
+
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
+    def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord ? true : false
+    def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
+    def hasSimple = authentication.principal.attributes?.mobile ? true : false
     def requestMfaMethod = httpRequest.getParameterValues("acr_values")  ?:  ( httpRequest.getParameterValues("authn_method") ?: [] )
 
     def mfaMethod = "mfa-composite"
@@ -40,8 +48,18 @@ def String run(final Object... args) {
  	}
     }
 
-    logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}] and request method [{}]", 
-	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod)
+    def availableHandlers = [ ] 
+    def preferredHandlers = [ ]
+    if(hasWebAuthn) { availableHandlers.add("mfa-webauthn") }
+    if(hasGAuth)    { availableHandlers.add("mfa-gauth"); preferredHandlers.add("mfa-gauth") }
+    if(hasSimple)   { availableHandlers.add("mfa-simple") }
+
+    flowScope.put("cuniMfaAvailableHandlers", availableHandlers)
+    flowScope.put("cuniMfaPreferredHandlers", preferredHandlers)
+
+    logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}] and request method [{}], flow scope [{}]", 
+	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, flowScope)
+
 
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
