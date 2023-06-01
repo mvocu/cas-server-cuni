@@ -15,7 +15,7 @@
             <h2 th:utext="#{cas.mfa.providerselection.title}" class="card-title">Multifactor Authentication Provider Selection</h2>
             <hr>
             <div class="card-text">
-                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${#lists.contains(cuniMfaPreferredHandlers, provider)}" class="border-bottom py-4">
+                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${cuniMfaPreferredHandlers != null and #lists.contains(cuniMfaPreferredHandlers, provider)}" class="border-bottom py-4">
                     <form name="fm1" method="post" th:action="@{/login}">
                         <h4 class="d-flex align-items-center">
                             <i class="mdi mdi-laptop fas fa-laptop me-2"></i>
@@ -38,7 +38,7 @@
                     <i class="mdi mdi-arrow-down-drop-circle fas fa-caret-down"></i>
                     <span class="mdc-button__label" th:text="#{cas.mfa.providerselection.other}">Use other method</span>
                 </a>
-                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${not #lists.contains(cuniMfaPreferredHandlers, provider) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="should-hide border-bottom py-4">
+                <div th:id="${provider}" th:each="provider: ${mfaSelectableProviders}" th:if="${(cuniMfaPreferredHandlers == null or not #lists.contains(cuniMfaPreferredHandlers, provider)) and (#lists.isEmpty(cuniMfaAvailableHandlers) or #lists.contains(cuniMfaAvailableHandlers, provider))}" class="should-hide border-bottom py-4">
                     <form name="fm1" method="post" th:action="@{/login}">
                         <h4 class="d-flex align-items-center">
                             <i class="mdi mdi-laptop fas fa-laptop me-2"></i>
