@@ -18,7 +18,7 @@ def String run(final Object... args) {
     def mfaRequired = false
     def mfaAvailable = false
 
-    def flowScope = RequestContextHolder.getRequestContext().getFlowScope()
+    def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
@@ -54,13 +54,15 @@ def String run(final Object... args) {
     if(hasGAuth)    { availableHandlers.add("mfa-gauth"); preferredHandlers.add("mfa-gauth") }
     if(hasSimple)   { availableHandlers.add("mfa-simple") }
 
-    flowScope.put("cuniMfaAvailableHandlers", availableHandlers)
-    flowScope.put("cuniMfaPreferredHandlers", preferredHandlers)
+    if(availableHandlers && !preferredHandlers) { preferredHandlers.add(availableHandlers.first()) }
+
+    flowScope?.put("cuniMfaAvailableHandlers", availableHandlers)
+    flowScope?.put("cuniMfaPreferredHandlers", preferredHandlers)
 
     logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}] and request method [{}], flow scope [{}]", 
 	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, flowScope)
-
-
+    logger.info("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
+ 
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
     if(serviceMfaLevel.contains("required")) {
