@@ -64,7 +64,7 @@
                                         th:id="${entry.name}"
                                         th:classappend="'mdc-button-' + ${entry.type}"
                                         accesskey="s">
-                                    <span class="mdc-button__label" th:utext="#{screen.welcome.label.ext.${#strings.defaultString(entry.title,entry.name)}}">[[${#strings.defaultString(entry.title,entry.name)}]]</span>
+                                    <span class="mdc-button__label" th:utext="#{screen.welcome.label.ext.__${#strings.defaultString(entry.title,entry.name)}__}">[[${#strings.defaultString(entry.title,entry.name)}]]</span>
                                 </button>
 
                                 <input type="hidden" name="client_name" th:value="${entry.name}" />
@@ -118,7 +118,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <p th:utext="#{screen.welcome.label.register(#strings.defaultString(@environment.getProperty('cas.cuni.url.ext'),'https://cas.cuni.cz/ext/'))}">You have to register your external identity with CAS to proceed with your CAS identity.</p>
+                    <p th:utext="#{screen.welcome.label.register(${#strings.defaultString(@environment.getProperty('cas.cuni.url.register'), 'https://cas.cuni.cz/ext/')})}">You have to register your external identity with CAS to proceed with your CAS identity.</p>
                 </div>
             </div>
 

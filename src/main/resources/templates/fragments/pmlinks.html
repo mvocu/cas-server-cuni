@@ -38,10 +38,10 @@
         </form>
         <div th:unless="${passwordManagementEnabled}">
             <br />
-            <span class="mdi mdi-account-question"></span>
-            <span th:utext="#{screen.pm.button.forgotpwd('https://ldapuser.cuni.cz/reset')}">Forgot your password?</span>
-	    <span style="margin-left: 1.5rem" class="ml-4 mdi mdi-help-circle-outline"></span>
-	    <span th:utext="#{screen.pm.button.helpdesk('https://is.cuni.cz/webapps/index.php?controller=Porad2QueryPublic&action=run&apl=cas')}">Need help?</span>
+            <span class="mdi mdi-account-question"
+               th:utext="#{screen.pm.button.forgotpwd('https://ldapuser.cuni.cz/reset')}">Forgot your password?</span>
+	    <span style="margin-left: 1.5rem" class="ml-4 mdi mdi-help-circle-outline"
+	       th:utext="#{screen.pm.button.helpdesk('https://is.cuni.cz/webapps/index.php?controller=Porad2QueryPublic&action=run&apl=cas')}">Need help?</span>
         </div>
     </div>
 </body>
