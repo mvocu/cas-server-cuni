@@ -116,6 +116,10 @@
                         </li>
                     </ul>
                 </div>
+
+                <div class="mt-4">
+                    <p th:utext="#{screen.welcome.label.register(https://cas.cuni.cz/ext/)">You have to register your external identity with CAS to proceed with your CAS identity.</p>
+                </div>
             </div>
 
             <div th:if="${wsfedUrls}" id="list-providers"
