@@ -22,7 +22,7 @@ def String run(final Object... args) {
 
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
-    def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord ? true : false
+    def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord != null ? true : false
     def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
     def hasSimple = authentication.principal.attributes?.mobile ? true : false
     def requestMfaMethod = httpRequest.getParameterValues("acr_values")  ?:  ( httpRequest.getParameterValues("authn_method") ?: [] )
@@ -50,6 +50,7 @@ def String run(final Object... args) {
 
     def availableHandlers = [ ] 
     def preferredHandlers = [ ]
+    def configuredHandlers = ["mfa-webauthn", "mfa-gauth", "mfa-simple"]
     if(hasWebAuthn) { availableHandlers.add("mfa-webauthn") }
     if(hasGAuth)    { availableHandlers.add("mfa-gauth"); preferredHandlers.add("mfa-gauth") }
     if(hasSimple)   { availableHandlers.add("mfa-simple") }
@@ -77,7 +78,7 @@ def String run(final Object... args) {
         mfaRequired = true
     }
 
-    if(requestMfaMethod) {
+    if(requestMfaMethod && configuredHandlers.contains(requestMfaMethod)) {
         mfaRequired = true
         mfaMethod = requestMfaMethod
     }
