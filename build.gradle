@@ -168,10 +168,18 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-spnego-webflow:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
 
+    /* for QR authentication */
+    implementation "org.apereo.cas:cas-server-support-qr-authentication:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-rest-tokens:${project.'cas.version'}" 
+
     /* for spnego */
     implementation files("${projectDir}/lib/jcifs-ext.jar")
     /* for eidas extension to saml2 */
-    implementation 'se.litsec.eidas:eidas-opensaml4:2.1.2'
+    implementation ('se.litsec.eidas:eidas-opensaml4:2.1.2') {
+        exclude group: "org.opensaml", module: "opensaml-xmlsec-api"
+        exclude group: "org.opensaml", module: "opensaml-core-api"
+        exclude group: "org.opensaml", module: "opensaml-core-impl"
+    }
     /* for running on jetty */
     implementation "org.eclipse.jetty:jetty-util:10.0.7"
 
