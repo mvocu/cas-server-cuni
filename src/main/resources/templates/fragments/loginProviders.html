@@ -51,7 +51,9 @@
                                 <span th:case="saml2" th:class="${entry.cssClass}"></span>
                                 <span th:case="*" class="fa fa-sign-in-alt"></span>
 
-                                [[${entry.name}]]
+                                <span th:utext="#{screen.welcome.label.ext.__${entry.name}__}">[[${entry.name}]]</span>
+
+                                <!-- [[${entry.name}]] -->
                             </a>
                         </li>
                     </ul>
