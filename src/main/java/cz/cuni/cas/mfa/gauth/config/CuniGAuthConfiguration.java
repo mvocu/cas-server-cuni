@@ -28,7 +28,7 @@ import org.springframework.webflow.execution.Action;
 @AutoConfiguration
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 public class CuniGAuthConfiguration {
-	private static final int WEBFLOW_CONFIGURER_ORDER = 100;
+	private static final int WEBFLOW_CONFIGURER_ORDER = 200;
 
 	@ConditionalOnMissingBean(name = "cuniGAuthWebflowConfigurer")
 	@Bean
