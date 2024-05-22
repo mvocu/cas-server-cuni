@@ -3,6 +3,7 @@ package cz.cuni.cas.mfa.gauth.config;
 import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthSendRequestNotificationAction;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthWebflowConfigurer;
+import cz.cuni.cas.mfa.gauth.web.CuniGAuthNotificationEndpoint;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -18,6 +19,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -100,4 +102,13 @@ public class CuniGAuthConfiguration {
 		return plan -> plan.registerWebflowConfigurer(cuniGAuthWebflowConfigurer);
 	}
 
+	@Bean
+	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+	public CuniGAuthNotificationEndpoint cuniGAuthNotificationEndpoint(
+			final CasConfigurationProperties casProperties,
+			@Qualifier("brokerMessagingTemplate")
+			final SimpMessagingTemplate template
+	) {
+		return new CuniGAuthNotificationEndpoint(casProperties, template);
+	}
 }

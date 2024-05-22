@@ -29,7 +29,7 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
 
     private final MessageSendingOperations<String> messageTemplate;
 
-    protected CuniGAuthNotificationEndpoint(CasConfigurationProperties casProperties, MessageSendingOperations<String> messageTemplate) {
+    public CuniGAuthNotificationEndpoint(CasConfigurationProperties casProperties, MessageSendingOperations<String> messageTemplate) {
         super(casProperties);
         this.messageTemplate = messageTemplate;
     }
