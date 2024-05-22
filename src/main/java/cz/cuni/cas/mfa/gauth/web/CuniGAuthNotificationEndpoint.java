@@ -36,10 +36,10 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
 
     @PostMapping(path = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Receive notification as JSON document", parameters = @Parameter(name = "request"))
-    public HttpStatus importAccount(final HttpServletRequest request) throws Exception {
+    public HttpStatus notifyTOTP(final HttpServletRequest request) throws Exception {
         val requestBody = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
         LOGGER.trace("Received payload [{}]", requestBody);
-        val data = MAPPER.readValue(requestBody, new TypeReference<Map<String,Object>>() {});
+        val data = MAPPER.readValue(requestBody, new TypeReference<Map<String,String>>() {});
         return HttpStatus.OK;
     }
 
