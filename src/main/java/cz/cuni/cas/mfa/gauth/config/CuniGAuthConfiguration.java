@@ -18,17 +18,45 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 import lombok.val;
 import org.springframework.webflow.execution.Action;
+import org.apache.commons.lang3.ArrayUtils;
 
+@EnableWebSocketMessageBroker
 @AutoConfiguration
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 public class CuniGAuthConfiguration {
 	private static final int WEBFLOW_CONFIGURER_ORDER = 200;
+
+	@Bean
+	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+	public WebSocketMessageBrokerConfigurer cuniGAuthWebSocketMessageBrokerConfigurer(
+			final CasConfigurationProperties casProperties) {
+		return new WebSocketMessageBrokerConfigurer() {
+			@Override
+			public void registerStompEndpoints(final StompEndpointRegistry registry) {
+				registry.addEndpoint("/gauth-websocket")
+						.setAllowedOrigins(casProperties.getAuthn().getQr().getAllowedOrigins().toArray(ArrayUtils.EMPTY_STRING_ARRAY))
+						.addInterceptors(new HttpSessionHandshakeInterceptor())
+						.withSockJS();
+			}
+
+			@Override
+			public void configureMessageBroker(final MessageBrokerRegistry config) {
+				config.enableSimpleBroker(CuniGAuthWebflowConstants.GAUTH_SIMPLE_BROKER_DESTINATION_PREFIX);
+				config.setApplicationDestinationPrefixes("/gauth");
+			}
+		};
+	}
 
 	@ConditionalOnMissingBean(name = "cuniGAuthWebflowConfigurer")
 	@Bean

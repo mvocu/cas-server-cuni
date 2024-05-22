@@ -1,5 +1,6 @@
 package cz.cuni.cas.mfa.gauth.flow;
 
+import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -8,7 +9,8 @@ import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
-import org.springframework.webflow.action.EventFactorySupport;
+
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,6 +24,10 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         val principal = authentication.getPrincipal();
 
         LOGGER.debug("XXX Executing action CuniGAuthSendRequestNotificationAction for principal [{}]", principal.getId());
-        return new EventFactorySupport().event(this, "null");
+        val id = UUID.randomUUID().toString();
+        val flowScope = requestContext.getFlowScope();
+        flowScope.put("gauthChannel", id);
+        flowScope.put("gauthPrefix", CuniGAuthWebflowConstants.GAUTH_SIMPLE_BROKER_DESTINATION_PREFIX);
+        return null;
     }
 }

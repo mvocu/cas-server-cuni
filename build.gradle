@@ -168,9 +168,14 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-spnego-webflow:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
 
+    /* for GAuth notifications */
+    implementation "org.apereo.cas:cas-server-support-websockets:${project.'cas.version'}"
+
     /* for QR authentication */
+    /*
     implementation "org.apereo.cas:cas-server-support-qr-authentication:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-rest-tokens:${project.'cas.version'}" 
+    */
 
     /* for spnego */
     implementation files("${projectDir}/lib/jcifs-ext.jar")
