@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -37,6 +38,7 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
     }
 
 
+    @NoArgsConstructor
     private class NotifyTOTPMessage {
         @Getter
         @Setter
