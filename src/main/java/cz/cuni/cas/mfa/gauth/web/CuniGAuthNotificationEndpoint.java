@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
@@ -25,7 +27,7 @@ import java.util.Map;
 public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
 
     private static final ObjectMapper MAPPER = JacksonObjectMapperFactory.builder()
-            .defaultTypingEnabled(true).build().toObjectMapper();
+            .defaultTypingEnabled(false).build().toObjectMapper();
 
     private final MessageSendingOperations<String> messageTemplate;
 
@@ -34,12 +36,22 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
         this.messageTemplate = messageTemplate;
     }
 
+
+    private class NotifyTOTPMessage {
+        @Getter
+        @Setter
+        protected String channelId;
+        @Getter
+        @Setter
+        protected String code;
+    }
+
     @PostMapping(path = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Receive notification as JSON document", parameters = @Parameter(name = "request"))
     public HttpStatus notifyTOTP(final HttpServletRequest request) throws Exception {
         val requestBody = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
         LOGGER.trace("Received payload [{}]", requestBody);
-        val data = MAPPER.readValue(requestBody, new TypeReference<Map<String,String>>() {});
+        val message = MAPPER.readValue(requestBody, NotifyTOTPMessage.class);
         return HttpStatus.OK;
     }
 
