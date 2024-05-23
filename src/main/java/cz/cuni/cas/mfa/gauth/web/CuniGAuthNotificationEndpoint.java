@@ -2,6 +2,7 @@ package cz.cuni.cas.mfa.gauth.web;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.*;
@@ -62,6 +63,11 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
         val requestBody = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
         LOGGER.trace("Received payload [{}]", requestBody);
         val message = MAPPER.readValue(requestBody, NotifyTOTPMessage.class);
+        String destination = String.format("%s/%s/code",
+                CuniGAuthWebflowConstants.GAUTH_SIMPLE_BROKER_DESTINATION_PREFIX,
+                message.channelId
+                );
+        messageTemplate.convertAndSend(destination, Map.of("code", message.getCode()));
         return new NotifyTOTPResponse("success", "success");
     }
 
