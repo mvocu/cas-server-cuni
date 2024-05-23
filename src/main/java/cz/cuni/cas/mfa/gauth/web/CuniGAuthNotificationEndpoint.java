@@ -39,7 +39,7 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
 
 
     @NoArgsConstructor
-    private class NotifyTOTPMessage {
+    private static class NotifyTOTPMessage {
         @Getter
         @Setter
         protected String channelId;
