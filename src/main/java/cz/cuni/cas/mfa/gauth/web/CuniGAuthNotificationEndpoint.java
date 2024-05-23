@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.io.IOUtils;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.util.serialization.JacksonObjectMapperFactory;
@@ -43,18 +40,29 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
         @Getter
         @Setter
         protected String channelId;
+
         @Getter
         @Setter
         protected String code;
     }
 
+    @AllArgsConstructor
+    private static class NotifyTOTPResponse {
+        @Getter
+        @Setter
+        protected String result;
+        @Getter
+        @Setter
+        protected String message;
+    }
+
     @PostMapping(path = "/notify", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Receive notification as JSON document", parameters = @Parameter(name = "request"))
-    public HttpStatus notifyTOTP(final HttpServletRequest request) throws Exception {
+    public NotifyTOTPResponse notifyTOTP(final HttpServletRequest request) throws Exception {
         val requestBody = IOUtils.toString(request.getInputStream(), StandardCharsets.UTF_8);
         LOGGER.trace("Received payload [{}]", requestBody);
         val message = MAPPER.readValue(requestBody, NotifyTOTPMessage.class);
-        return HttpStatus.OK;
+        return new NotifyTOTPResponse("success", "success");
     }
 
 }
