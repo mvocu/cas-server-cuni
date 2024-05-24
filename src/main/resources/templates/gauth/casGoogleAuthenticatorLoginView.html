@@ -69,15 +69,20 @@
                                               console.log(result.body);
                                               let body = JSON.parse(result.body);
                                               console.log(body);
-                                              if (body.error) {
-                                                  console.log("error");
-                                                  $("#gautherror").show();
-                                              } else if (body.success) {
-                                                  console.log("success");
-                                                  stompClient.disconnect();
-                                                  $("#gautherror").hide();
-                                                  $("#fm1 #token").val(body.code);
-                                                  $("#fm1").submit();
+                                              try {
+                                                  if (body.code) {
+                                                      console.log("success");
+                                                      stompClient.disconnect();
+                                                      $("#gautherror").hide();
+                                                      $("#fm1 #token").val(body.code);
+                                                      $("#fm1").submit();
+                                                  } else {
+                                                      console.log("no code");
+                                                      $("#gautherror").show();
+                                                  }
+                                              } catch (Exception e) {
+                                                      console.log(e);
+                                                      $("#gautherror").show();
                                               }
                                           });
                                      });
