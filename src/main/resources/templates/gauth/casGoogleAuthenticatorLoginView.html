@@ -68,9 +68,12 @@
                                           stompClient.subscribe(prefix + '/' + topic + '/code', function (result) {
                                               console.log(result.body);
                                               let body = JSON.parse(result.body);
+                                              console.log(body);
                                               if (body.error) {
+                                                  console.log("error");
                                                   $("#gautherror").show();
                                               } else if (body.success) {
+                                                  console.log("success");
                                                   stompClient.disconnect();
                                                   $("#gautherror").hide();
                                                   $("#fm1 #token").val(body.code);
