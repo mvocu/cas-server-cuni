@@ -24,6 +24,52 @@
             </div>
         </section>
 
+        <form method="post" id="fmnotify" th:object="${credential}" th:action="@{/login}" style="display:none">
+            <input type="hidden" name="_eventId_submit" value="Login"/>
+            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+            <input type="hidden" name="geolocation"/>
+            <input type="hidden" id="account" name="accountId" size="25" autocomplete="off" th:field="*{accountId}" />
+            <input type="hidden" name="token" id="code"/>
+            <script type="text/javascript" th:inline="javascript">
+                /*<![CDATA[*/
+                let accountId = /*[[${registeredDevice.id}]]*/;
+                document.getElementById("account").value = accountId;
+
+                var endpoint = /*[[@{/gauth-websocket}]]*/  ;
+                var topic = /*[[${gauthChannel}]]*/  ;
+                var prefix = /*[[${gauthPrefix}]]*/  ;
+
+                var stompClient = null;
+                $(function () {
+                     var socket = new SockJS(endpoint);
+                     stompClient = Stomp.over(socket);
+                     stompClient.connect({}, function (frame) {
+                          stompClient.subscribe(prefix + '/' + topic + '/code', function (result) {
+                              console.log(result.body);
+                              let body = JSON.parse(result.body);
+                              console.log(body);
+                              try {
+                                  if (body.code) {
+                                      console.log("success");
+                                      stompClient.disconnect();
+                                      $("#gautherror").hide();
+                                      $("#fmnotify #code").val(body.code);
+                                      $("#fmnotify").submit();
+                                  } else {
+                                      console.log("no code");
+                                      $("#gautherror").show();
+                                  }
+                              } catch (e) {
+                                      console.log(e);
+                                      $("#gautherror").show();
+                              }
+                          });
+                     });
+                });
+                /*]]>*/
+            </script>
+        </form>
+
         <form method="post" id="fm1" th:object="${credential}" th:action="@{/login}">
             <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
                 <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}"/>
@@ -55,38 +101,6 @@
                                 /*<![CDATA[*/
                                 let accountId = /*[[${registeredDevice.id}]]*/;
                                 document.getElementById("accountId").value = accountId;
-
-                                var endpoint = /*[[@{/gauth-websocket}]]*/  ;
-                                var topic = /*[[${gauthChannel}]]*/  ;
-                                var prefix = /*[[${gauthPrefix}]]*/  ;
-
-                                var stompClient = null;
-                                $(function () {
-                                     var socket = new SockJS(endpoint);
-                                     stompClient = Stomp.over(socket);
-                                     stompClient.connect({}, function (frame) {
-                                          stompClient.subscribe(prefix + '/' + topic + '/code', function (result) {
-                                              console.log(result.body);
-                                              let body = JSON.parse(result.body);
-                                              console.log(body);
-                                              try {
-                                                  if (body.code) {
-                                                      console.log("success");
-                                                      stompClient.disconnect();
-                                                      $("#gautherror").hide();
-                                                      $("#fm1 #token").val(body.code);
-                                                      $("#fm1").submit();
-                                                  } else {
-                                                      console.log("no code");
-                                                      $("#gautherror").show();
-                                                  }
-                                              } catch (e) {
-                                                      console.log(e);
-                                                      $("#gautherror").show();
-                                              }
-                                          });
-                                     });
-                                });
 
                                 /*]]>*/
                             </script>
