@@ -13,7 +13,16 @@
 <main role="main" class="container mt-3 mb-3">
     <div layout:fragment="content" id="login" class="mdc-card card mdc-card-content w-lg-50 p-4 m-auto">
 
+        <script type="text/javascript" th:src="@{#{webjars.socket.js}}"></script>
+        <script type="text/javascript" th:src="@{#{webjars.stomp.js}}"></script>
+
         <p th:utext="#{screen.authentication.gauth.selecteddevice(${registeredDevice.name})}"></p>
+
+        <section>
+            <div id="gautherror" class="banner banner-danger alert alert-danger banner-dismissible" style="display:none;">
+                <p th:utext="#{cas.authn.gauth.fail}">Error</p>
+            </div>
+        </section>
 
         <form method="post" id="fm1" th:object="${credential}" th:action="@{/login}">
             <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
@@ -46,7 +55,32 @@
                                 /*<![CDATA[*/
                                 let accountId = /*[[${registeredDevice.id}]]*/;
                                 document.getElementById("accountId").value = accountId;
-                                                /*]]>*/
+
+                                var endpoint = /*[[@{/gauth-websocket}]]*/  ;
+                                var topic = /*[[${gauthChannel}]]*/  ;
+                                var prefix = /*[[${gauthPrefix}]]*/  ;
+
+                                var stompClient = null;
+                                $(function () {
+                                     var socket = new SockJS(endpoint);
+                                     stompClient = Stomp.over(socket);
+                                     stompClient.connect({}, function (frame) {
+                                          stompClient.subscribe(prefix + '/' + topic + '/code', function (result) {
+                                              console.log(result.body);
+                                              let body = JSON.parse(result.body);
+                                              if (body.error) {
+                                                  $("#gautherror").show();
+                                              } else if (body.success) {
+                                                  stompClient.disconnect();
+                                                  $("#gautherror").hide();
+                                                  $("#fm1 #token").val(body.code);
+                                                  $("#fm1").submit();
+                                              }
+                                          });
+                                     });
+                                });
+
+                                /*]]>*/
                             </script>
                         </div>
                     </div>
