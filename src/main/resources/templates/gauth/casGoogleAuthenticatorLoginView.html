@@ -32,8 +32,8 @@
             <input type="hidden" name="token" id="code"/>
             <script type="text/javascript" th:inline="javascript">
                 /*<![CDATA[*/
-                let accountId = /*[[${registeredDevice.id}]]*/;
-                document.getElementById("account").value = accountId;
+                let account = /*[[${registeredDevice.id}]]*/;
+                document.getElementById("account").value = account;
 
                 var endpoint = /*[[@{/gauth-websocket}]]*/  ;
                 var topic = /*[[${gauthChannel}]]*/  ;
