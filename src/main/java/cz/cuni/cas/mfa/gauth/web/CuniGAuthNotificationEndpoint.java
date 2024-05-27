@@ -37,23 +37,19 @@ public class CuniGAuthNotificationEndpoint extends BaseCasActuatorEndpoint {
 
 
     @NoArgsConstructor
+    @Getter
+    @Setter
     private static class NotifyTOTPMessage {
-        @Getter
-        @Setter
         protected String channelId;
-
-        @Getter
-        @Setter
         protected String code;
+        protected String principalId;
     }
 
     @AllArgsConstructor
+    @Getter
+    @Setter
     private static class NotifyTOTPResponse {
-        @Getter
-        @Setter
         protected String result;
-        @Getter
-        @Setter
         protected String message;
     }
 

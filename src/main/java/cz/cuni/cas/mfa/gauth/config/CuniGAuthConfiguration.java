@@ -1,5 +1,6 @@
 package cz.cuni.cas.mfa.gauth.config;
 
+import cz.cuni.cas.CuniConfigurationProperties;
 import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthSendRequestNotificationAction;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthWebflowConfigurer;
@@ -35,7 +36,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @EnableWebSocketMessageBroker
 @AutoConfiguration
-@EnableConfigurationProperties(CasConfigurationProperties.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, CuniConfigurationProperties.class})
 public class CuniGAuthConfiguration {
 	private static final int WEBFLOW_CONFIGURER_ORDER = 200;
 
@@ -83,11 +84,12 @@ public class CuniGAuthConfiguration {
 	@ConditionalOnMissingBean(name = CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION)
 	public Action sendGAuthRequestNotificationAction(
 			final ConfigurableApplicationContext applicationContext,
-			final CasConfigurationProperties casProperties) {
+			final CasConfigurationProperties casProperties,
+			final CuniConfigurationProperties cuniProperties) {
 		return WebflowActionBeanSupplier.builder()
 				.withApplicationContext(applicationContext)
 				.withProperties(casProperties)
-				.withAction(() -> new CuniGAuthSendRequestNotificationAction(casProperties))
+				.withAction(() -> new CuniGAuthSendRequestNotificationAction(cuniProperties))
 				.withId(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION)
 				.build()
 				.get();
