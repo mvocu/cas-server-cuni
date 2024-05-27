@@ -37,7 +37,6 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         protected final String webflow_id;
         @NonNull
         protected final String username;
-        @NonNull
         protected final String application;
         protected String name;
         protected String email;
@@ -66,9 +65,9 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
 
         val url = cuniProperties.getGauth().getNotification_url();
         val id = UUID.randomUUID().toString();
-        val request = new NotificationRequest(id, principal.getId(), service.getFriendlyName());
+        val request = new NotificationRequest(id, principal.getId(), service != null ? service.getFriendlyName() : null);
         LOGGER.debug("Sending notification request for principal [{}] with id [{}] for service [{}]", principal.getId(),
-                id, service.getFriendlyName());
+                id, service != null ? service.getFriendlyName() : "");
         val exec = HttpUtils.HttpExecutionRequest.builder()
                 .method(HttpMethod.POST)
                 .url(url)
