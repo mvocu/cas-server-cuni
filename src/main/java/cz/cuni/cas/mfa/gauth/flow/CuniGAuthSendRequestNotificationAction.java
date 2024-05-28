@@ -34,9 +34,9 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
     @Setter
     private static class NotificationRequest {
         @NonNull
-        protected final String webflow_id;
+        protected final String channelId;
         @NonNull
-        protected final String username;
+        protected final String principalId;
         protected final String application;
         protected String name;
         protected String email;

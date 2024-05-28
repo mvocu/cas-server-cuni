@@ -18,22 +18,25 @@
 
         <p th:utext="#{screen.authentication.gauth.selecteddevice(${registeredDevice.name})}"></p>
 
-        <section>
-            <div id="gautherror" class="banner banner-danger alert alert-danger banner-dismissible" style="display:none;">
-                <p th:utext="#{cas.authn.gauth.fail}">Error</p>
-            </div>
-        </section>
+        <span th:if="${gauthChannel}">
+            <section>
+                <div id="gautherror" class="banner banner-danger alert alert-danger banner-dismissible" style="display:none;">
+                    <p th:utext="#{cas.authn.gauth.fail}">Error</p>
+                </div>
+            </section>
 
-        <form method="post" id="fmnotify" th:object="${credential}" th:action="@{/login}" style="display:none">
-            <input type="hidden" name="_eventId_submit" value="Login"/>
-            <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-            <input type="hidden" name="geolocation"/>
-            <input type="hidden" id="account" name="accountId" size="25" autocomplete="off" th:field="*{accountId}" />
-            <input type="hidden" name="token" id="code"/>
-            <script type="text/javascript" th:inline="javascript">
-                /*<![CDATA[*/
+            <form method="post" id="fmnotify" th:object="${credential}" th:action="@{/login}" style="display:none">
+                <input type="hidden" name="_eventId_submit" value="Login"/>
+                <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+                <input type="hidden" name="geolocation"/>
+                <input type="hidden" id="account" name="accountId" size="25" autocomplete="off" th:field="*{accountId}" />
+                <input type="hidden" name="token" id="code"/>
+                <script type="text/javascript" th:inline="javascript">
+                    /*<![CDATA[*/
                 let account = /*[[${registeredDevice.id}]]*/;
                 document.getElementById("account").value = account;
+
+                $("#fm1").hide();
 
                 var endpoint = /*[[@{/gauth-websocket}]]*/  ;
                 var topic = /*[[${gauthChannel}]]*/  ;
@@ -67,8 +70,16 @@
                      });
                 });
                 /*]]>*/
-            </script>
-        </form>
+                </script>
+            </form>
+
+            <div id="wait" class="banner banner-info my-2">
+                <span th:utext="#{cuni.gauth.waiting-msg}">Waiting for confirmation...</span>
+            </div>
+            <div class="my-2">
+                <a href="#" class="" onclick='$("#fm1").show(); $("#wait").hide()' th:utext="#{cuni.gauth.manual-link}">Enter code manually</a>
+            </div>
+        </span>
 
         <form method="post" id="fm1" th:object="${credential}" th:action="@{/login}">
             <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
