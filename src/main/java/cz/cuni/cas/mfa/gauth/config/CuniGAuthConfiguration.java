@@ -2,16 +2,17 @@ package cz.cuni.cas.mfa.gauth.config;
 
 import cz.cuni.cas.CuniConfigurationProperties;
 import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
+import cz.cuni.cas.mfa.gauth.api.CuniGAuthNotificationService;
+import cz.cuni.cas.mfa.gauth.flow.CuniGAuthSendConfirmationAction;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthSendRequestNotificationAction;
 import cz.cuni.cas.mfa.gauth.flow.CuniGAuthWebflowConfigurer;
+import cz.cuni.cas.mfa.gauth.service.CuniGAuthNotificationServiceImpl;
 import cz.cuni.cas.mfa.gauth.web.CuniGAuthNotificationEndpoint;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.CasWebflowConstants;
-import org.apereo.cas.web.flow.CasWebflowExecutionPlan;
 import org.apereo.cas.web.flow.CasWebflowExecutionPlanConfigurer;
 import org.apereo.cas.web.flow.actions.WebflowActionBeanSupplier;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -63,6 +64,7 @@ public class CuniGAuthConfiguration {
 
 	@ConditionalOnMissingBean(name = "cuniGAuthWebflowConfigurer")
 	@Bean
+	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
 	public CasWebflowConfigurer cuniGAuthWebflowConfigurer(
 			final CasConfigurationProperties casProperties,
 			final ConfigurableApplicationContext applicationContext,
@@ -81,16 +83,42 @@ public class CuniGAuthConfiguration {
 
 	@Bean
 	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+	@ConditionalOnMissingBean(name = "cuniGAuthNotificationService")
+	public CuniGAuthNotificationService cuniGAuthNotificationService(
+			final CuniConfigurationProperties cuniProperties) {
+		return new CuniGAuthNotificationServiceImpl(cuniProperties);
+	}
+
+	@Bean
+	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
 	@ConditionalOnMissingBean(name = CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION)
 	public Action sendGAuthRequestNotificationAction(
 			final ConfigurableApplicationContext applicationContext,
 			final CasConfigurationProperties casProperties,
-			final CuniConfigurationProperties cuniProperties) {
+			@Qualifier("cuniGAuthNotificationService")
+			final CuniGAuthNotificationService notificationService) {
 		return WebflowActionBeanSupplier.builder()
 				.withApplicationContext(applicationContext)
 				.withProperties(casProperties)
-				.withAction(() -> new CuniGAuthSendRequestNotificationAction(cuniProperties))
+				.withAction(() -> new CuniGAuthSendRequestNotificationAction(notificationService))
 				.withId(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION)
+				.build()
+				.get();
+	}
+
+	@Bean
+	@RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+	@ConditionalOnMissingBean(name = CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_CONFIRMATION)
+	public Action sendGAuthConfirmationAction(
+			final ConfigurableApplicationContext applicationContext,
+			final CasConfigurationProperties casProperties,
+			@Qualifier("cuniGAuthNotificationService")
+			final CuniGAuthNotificationService notificationService) {
+		return WebflowActionBeanSupplier.builder()
+				.withApplicationContext(applicationContext)
+				.withProperties(casProperties)
+				.withAction(() -> new CuniGAuthSendConfirmationAction(notificationService))
+				.withId(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_CONFIRMATION)
 				.build()
 				.get();
 	}

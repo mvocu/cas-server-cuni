@@ -1,5 +1,6 @@
 package cz.cuni.cas.mfa.gauth.flow;
 
+import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -16,8 +17,6 @@ import org.apereo.cas.web.flow.configurer.CasMultifactorWebflowCustomizer;
 import java.util.List;
 import java.util.Optional;
 import lombok.val;
-
-import static cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION;
 
 public class CuniGAuthWebflowConfigurer
         extends AbstractCasMultifactorWebflowConfigurer
@@ -43,7 +42,11 @@ public class CuniGAuthWebflowConfigurer
                 .forEach(registry -> {
             val flow = getFlow(registry, casProperties.getAuthn().getMfa().getGauth().getId());
             val viewLoginFormState = flow.getStateInstance(CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM);
-            viewLoginFormState.getEntryActionList().add(createEvaluateAction(ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION));
+            viewLoginFormState.getEntryActionList().add(
+                    createEvaluateAction(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION));
+            val realSubmitState = flow.getStateInstance(CasWebflowConstants.STATE_ID_REAL_SUBMIT);
+            realSubmitState.getEntryActionList().add(
+                    createEvaluateAction(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_CONFIRMATION));
         });
     }
 }
