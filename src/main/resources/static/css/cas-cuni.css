@@ -110,6 +110,10 @@ div#content {
     margin-bottom: 3rem;
 }
 
+.banner-success {
+  border-color: inherit !important;
+}
+
 @media screen and (max-height: 630px) {
 
 	footer.cas-footer {
