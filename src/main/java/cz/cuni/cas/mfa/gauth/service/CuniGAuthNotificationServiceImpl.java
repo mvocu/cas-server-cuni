@@ -45,7 +45,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                     .url(url)
                     .entity(MAPPER.writeValueAsString(request))
                     .headers(CollectionUtils.wrap(
-                            "Bearer", cuniProperties.getGauth().getToken(),
+                            "Authorization", "Bearer " + cuniProperties.getGauth().getToken(),
                             "Content-Type", MediaType.APPLICATION_JSON_VALUE))
                     .build();
             val response = HttpUtils.execute(exec);
@@ -84,7 +84,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
             exec = HttpUtils.HttpExecutionRequest.builder()
                     .method(HttpMethod.DELETE)
                     .url(dest.toString())
-                    .headers(CollectionUtils.wrap("Bearer", cuniProperties.getGauth().getToken()))
+                    .headers(CollectionUtils.wrap("Authorization", "Bearer " + cuniProperties.getGauth().getToken()))
                     .build();
             val response = HttpUtils.execute(exec);
             val statusCode = response != null ? response.getStatusLine().getStatusCode() : 500 ;
