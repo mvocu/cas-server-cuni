@@ -49,7 +49,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                             "Content-Type", MediaType.APPLICATION_JSON_VALUE))
                     .build();
             val response = HttpUtils.execute(exec);
-            val statusCode = response.getStatusLine().getStatusCode();
+            val statusCode = response != null ? response.getStatusLine().getStatusCode() : 500;
             if (HttpStatus.valueOf(statusCode).is2xxSuccessful()) {
                 val responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
                 val status = MAPPER.readValue(responseBody, CuniGAuthNotificationService.NotificationResponse.class);
@@ -59,7 +59,8 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                     LOGGER.warn("Notification service responded with [{}]", status.getMessage());
                 }
             } else {
-                LOGGER.warn("Error sending notification request: [{}]", response.getStatusLine().getReasonPhrase());
+                LOGGER.warn("Error sending notification request: [{}]",
+                        response != null ? response.getStatusLine().getReasonPhrase() : "no response");
             }
         } catch (IOException e) {
             LOGGER.warn("Error sending notification request: [{}]", e.getMessage());
@@ -86,7 +87,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                     .headers(CollectionUtils.wrap("Bearer", cuniProperties.getGauth().getToken()))
                     .build();
             val response = HttpUtils.execute(exec);
-            val statusCode = response.getStatusLine().getStatusCode();
+            val statusCode = response != null ? response.getStatusLine().getStatusCode() : 500 ;
             if (HttpStatus.valueOf(statusCode).is2xxSuccessful()) {
                 val responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
                 val status = MAPPER.readValue(responseBody, CuniGAuthNotificationService.NotificationResponse.class);
@@ -96,7 +97,8 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                     LOGGER.warn("Notification service responded with [{}]", status.getMessage());
                 }
             } else {
-                LOGGER.warn("Error removing notification request: [{}]", response.getStatusLine().getReasonPhrase());
+                LOGGER.warn("Error removing notification request: [{}]",
+                        response != null ? response.getStatusLine().getReasonPhrase() : "no response");
             }
         } catch (IOException e) {
             LOGGER.warn("Error removing notification request: [{}]", e.getMessage());
