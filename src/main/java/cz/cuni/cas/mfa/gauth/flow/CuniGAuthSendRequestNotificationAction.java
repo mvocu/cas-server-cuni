@@ -27,7 +27,8 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         val service = WebUtils.getRegisteredService(requestContext);
 
         val id = UUID.randomUUID().toString();
-        val request = new CuniGAuthNotificationService.NotificationRequest(id, principal.getId(), service != null ? service.getFriendlyName() : null);
+        val request = new CuniGAuthNotificationService.NotificationRequest(id, principal.getId(),
+                service != null ? service.getFriendlyName() : null);
         val response = notificationService.sendNotificationRequest(request);
         if(response != null && response.getCode() == 200) {
             LOGGER.debug("Notification request sent successfully, setting scope variables.");

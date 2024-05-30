@@ -36,7 +36,7 @@
                 let account = /*[[${registeredDevice.id}]]*/;
                 document.getElementById("account").value = account;
 
-                $("#fm1").hide();
+                $(document).ready(function() { $("#fm1").hide(); });
 
                 var endpoint = /*[[@{/gauth-websocket}]]*/  ;
                 var topic = /*[[${gauthChannel}]]*/  ;
