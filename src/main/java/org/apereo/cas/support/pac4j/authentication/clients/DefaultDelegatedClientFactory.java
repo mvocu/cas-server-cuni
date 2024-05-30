@@ -59,10 +59,15 @@ public class DefaultDelegatedClientFactory extends BaseDelegatedClientFactory im
         if(clientProperties instanceof Pac4jSamlClientProperties && client instanceof SAML2Client) {
             SAML2Client samlClient = (SAML2Client) client;
             Pac4jSamlClientProperties samlProperties = (Pac4jSamlClientProperties) clientProperties;
+            SAML2Configuration cfg = samlClient.getConfiguration();
             if(samlProperties.getExtensions().contains("nia")) {
                 LOGGER.debug("Configuring NIA extension for SAML2 client [{}]", samlClient.getName());
-                SAML2Configuration cfg = samlClient.getConfiguration();
                 cfg.setAuthnRequestExtensions(() -> NIAUtils.buildNIARequestExtension(samlProperties));
+            }
+            if(!samlProperties.getIdentityProviderEntityId().isEmpty()) {
+                LOGGER.debug("Setting identity provider entity id to [{}] for SAML2 client [{}]",
+                        samlProperties.getIdentityProviderEntityId(), samlClient.getName());
+                cfg.setIdentityProviderEntityId(samlProperties.getIdentityProviderEntityId());
             }
         }
     }

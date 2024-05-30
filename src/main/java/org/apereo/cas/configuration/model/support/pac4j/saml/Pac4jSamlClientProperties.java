@@ -310,6 +310,12 @@ public class Pac4jSamlClientProperties extends Pac4jBaseClientProperties impleme
      */
     private List<String> extensions = new ArrayList<>(0);
 
+    /**
+     * Entity id of identity provider that we are using. If not specified, first entity id will be taken from
+     * metadata list.
+     */
+    private String identityProviderEntityId;
+
     @RequiresModule(name = "cas-server-support-pac4j-webflow")
     @Getter
     @Setter
