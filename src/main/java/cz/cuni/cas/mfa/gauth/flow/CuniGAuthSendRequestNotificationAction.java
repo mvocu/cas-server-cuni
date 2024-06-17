@@ -14,6 +14,7 @@ import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
             request.setEmail(getFirstString(principal.getAttributes().get(mailAttr)));
         }
         request.setBrowser(WebUtils.getHttpServletRequestUserAgentFromRequestContext(requestContext));
-        request.setRequested_at(DateTimeFormatter.ISO_DATE_TIME.format(Instant.now()));
+        request.setRequested_at(LocalDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         val response = notificationService.sendNotificationRequest(request);
         if(response != null && response.getCode() == 200) {
             LOGGER.debug("Notification request sent successfully, setting scope variables.");
