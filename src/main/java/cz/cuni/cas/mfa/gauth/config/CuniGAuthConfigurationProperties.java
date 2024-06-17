@@ -31,4 +31,14 @@ public class CuniGAuthConfigurationProperties implements Serializable {
      *
      */
     private String token = "";
+
+    /**
+     *
+     */
+    private String name_attribute = "";
+
+    /**
+     *
+     */
+    private String email_attribute = "";
 }

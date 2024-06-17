@@ -95,12 +95,13 @@ public class CuniGAuthConfiguration {
 	public Action sendGAuthRequestNotificationAction(
 			final ConfigurableApplicationContext applicationContext,
 			final CasConfigurationProperties casProperties,
+			final CuniConfigurationProperties cuniProperties,
 			@Qualifier("cuniGAuthNotificationService")
 			final CuniGAuthNotificationService notificationService) {
 		return WebflowActionBeanSupplier.builder()
 				.withApplicationContext(applicationContext)
 				.withProperties(casProperties)
-				.withAction(() -> new CuniGAuthSendRequestNotificationAction(notificationService))
+				.withAction(() -> new CuniGAuthSendRequestNotificationAction(notificationService, cuniProperties))
 				.withId(CuniGAuthWebflowConstants.ACTION_ID_SEND_GAUTH_REQUEST_NOTIFICATION)
 				.build()
 				.get();
