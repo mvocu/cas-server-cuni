@@ -56,6 +56,7 @@ public class DefaultDelegatedClientFactory extends BaseDelegatedClientFactory im
     @Override
     protected void configureClient(IndirectClient client, Pac4jBaseClientProperties clientProperties, CasConfigurationProperties givenProperties) {
         super.configureClient(client, clientProperties, givenProperties);
+        /*
         if(clientProperties instanceof Pac4jSamlClientProperties && client instanceof SAML2Client) {
             SAML2Client samlClient = (SAML2Client) client;
             Pac4jSamlClientProperties samlProperties = (Pac4jSamlClientProperties) clientProperties;
@@ -71,6 +72,7 @@ public class DefaultDelegatedClientFactory extends BaseDelegatedClientFactory im
                 cfg.setIdentityProviderEntityId(samlProperties.getIdentityProviderEntityId());
             }
         }
+        */
     }
 
 
