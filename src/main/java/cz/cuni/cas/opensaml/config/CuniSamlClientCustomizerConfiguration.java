@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Bean;
 
 @AutoConfiguration
 @EnableConfigurationProperties(CasConfigurationProperties.class)
-public class CuniOpenSAMLClientCustomizerConfiguration {
+public class CuniSamlClientCustomizerConfiguration {
 
     @ConditionalOnMissingBean(name="niaClientCustomizer")
     @Bean
     public DelegatedClientFactoryCustomizer<SAML2Client> niaClientCustomizer(
             final CasConfigurationProperties casProperties
     ) {
-        return new CuniNIAClientCustomizer(casProperties);
+        return new CuniSamlClientCustomizer(casProperties);
     }
 }

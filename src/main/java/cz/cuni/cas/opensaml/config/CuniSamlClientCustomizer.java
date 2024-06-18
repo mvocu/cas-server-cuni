@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CuniNIAClientCustomizer implements DelegatedClientFactoryCustomizer<SAML2Client> {
+public class CuniSamlClientCustomizer implements DelegatedClientFactoryCustomizer<SAML2Client> {
 
     private final CasConfigurationProperties casProperties;
 
