@@ -37,7 +37,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
     public NotificationResponse sendNotificationRequest(NotificationRequest request) {
         LOGGER.debug("Sending notification request for principal [{}] with id [{}] for service [{}]",
                 request.getPrincipalId(), request.getChannelId(), request.getApplication());
-        val url = cuniProperties.getGauth().getNotification_url();
+        val url = cuniProperties.getGauth().getNotificationUrl();
         HttpUtils.HttpExecutionRequest exec = null;
         try {
             exec = HttpUtils.HttpExecutionRequest.builder()
@@ -73,7 +73,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
      */
     @Override
     public NotificationResponse sendConfirmationRequest(String channelId) {
-        val url = cuniProperties.getGauth().getNotification_url();
+        val url = cuniProperties.getGauth().getNotificationUrl();
         StringBuilder dest = new StringBuilder(url);
         if(!url.endsWith("/")) {
             dest.append('/');

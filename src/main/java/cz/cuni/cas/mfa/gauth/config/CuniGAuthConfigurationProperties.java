@@ -20,12 +20,12 @@ public class CuniGAuthConfigurationProperties implements Serializable {
     /**
      *
      */
-    private String notification_url = "https://localhost/notification_request";
+    private String notificationUrl = "https://localhost/notification_request";
 
     /**
      *
      */
-    private String confirmation_url = "https://localhost/confirmation_request";
+    private String confirmationUrl = "https://localhost/confirmation_request";
 
     /**
      *
@@ -35,10 +35,10 @@ public class CuniGAuthConfigurationProperties implements Serializable {
     /**
      *
      */
-    private String name_attribute = "";
+    private String nameAttribute = "";
 
     /**
      *
      */
-    private String email_attribute = "";
+    private String emailAttribute = "";
 }

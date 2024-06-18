@@ -5,16 +5,11 @@ import cz.cuni.cas.mfa.gauth.CuniGAuthWebflowConstants;
 import cz.cuni.cas.mfa.gauth.api.CuniGAuthNotificationService;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apereo.cas.util.DateTimeUtils;
 import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,8 +27,8 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         val authentication = WebUtils.getAuthentication(requestContext);
         val principal = authentication.getPrincipal();
         val service = WebUtils.getRegisteredService(requestContext);
-        val nameAttr = cuniProperties.getGauth().getName_attribute();
-        val mailAttr = cuniProperties.getGauth().getEmail_attribute();
+        val nameAttr = cuniProperties.getGauth().getNameAttribute();
+        val mailAttr = cuniProperties.getGauth().getEmailAttribute();
 
         val id = UUID.randomUUID().toString();
         val request = new CuniGAuthNotificationService.NotificationRequest(id, principal.getId(),
