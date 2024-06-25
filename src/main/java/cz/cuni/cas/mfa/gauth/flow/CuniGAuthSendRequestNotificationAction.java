@@ -44,10 +44,10 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         val response = notificationService.sendNotificationRequest(request);
         if(response != null && response.getCode() == 200) {
             LOGGER.debug("Notification request sent successfully, setting scope variables.");
+            val flowScope = requestContext.getFlowScope();
+            flowScope.put("gauthChannel", id);
+            flowScope.put("gauthPrefix", CuniGAuthWebflowConstants.GAUTH_SIMPLE_BROKER_DESTINATION_PREFIX);
         }
-        val flowScope = requestContext.getFlowScope();
-        flowScope.put("gauthChannel", id);
-        flowScope.put("gauthPrefix", CuniGAuthWebflowConstants.GAUTH_SIMPLE_BROKER_DESTINATION_PREFIX);
         return null;
     }
 
