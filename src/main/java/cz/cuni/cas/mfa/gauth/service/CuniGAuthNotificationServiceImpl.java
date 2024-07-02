@@ -53,7 +53,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
             if (HttpStatus.valueOf(statusCode).is2xxSuccessful()) {
                 val responseBody = IOUtils.toString(response.getEntity().getContent(), StandardCharsets.UTF_8);
                 val status = MAPPER.readValue(responseBody, CuniGAuthNotificationService.NotificationResponse.class);
-                if(status.getCode() == 200) {
+                if(status.getCode() < 300) {
                     return status;
                 } else {
                     LOGGER.warn("Notification service responded with {} [{}]", status.getCode(), status.getMessage());

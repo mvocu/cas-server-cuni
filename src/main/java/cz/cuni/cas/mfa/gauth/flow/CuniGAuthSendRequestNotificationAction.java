@@ -42,7 +42,7 @@ public class CuniGAuthSendRequestNotificationAction extends BaseCasWebflowAction
         request.setBrowser(WebUtils.getHttpServletRequestUserAgentFromRequestContext(requestContext));
         request.setRequested_at(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         val response = notificationService.sendNotificationRequest(request);
-        if(response != null && response.getCode() == 200) {
+        if(response != null && response.getCode() < 300) {
             LOGGER.debug("Notification request sent successfully, setting scope variables.");
             val flowScope = requestContext.getFlowScope();
             flowScope.put("gauthChannel", id);
