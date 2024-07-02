@@ -56,7 +56,7 @@ public class CuniGAuthNotificationServiceImpl implements CuniGAuthNotificationSe
                 if(status.getCode() == 200) {
                     return status;
                 } else {
-                    LOGGER.warn("Notification service responded with [{}]", status.getMessage());
+                    LOGGER.warn("Notification service responded with {} [{}]", status.getCode(), status.getMessage());
                 }
             } else {
                 LOGGER.warn("Error sending notification request: [{}]",
