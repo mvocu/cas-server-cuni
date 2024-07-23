@@ -32,12 +32,14 @@ public class CuniSamlClientCustomizer implements DelegatedClientFactoryCustomize
                 LOGGER.debug("Configuring NIA extension for SAML2 client [{}]", client.getName());
                 cfg.setAuthnRequestExtensions(() -> NIAUtils.buildNIARequestExtension(samlProperties));
             }
+            /*
             if(samlProperties.getIdentityProviderEntityId() != null &&
                     !samlProperties.getIdentityProviderEntityId().isEmpty()) {
                 LOGGER.debug("Setting identity provider entity id to [{}] for SAML2 client [{}]",
                         samlProperties.getIdentityProviderEntityId(), client.getName());
                 cfg.setIdentityProviderEntityId(samlProperties.getIdentityProviderEntityId());
             }
+            */
         }
     }
 

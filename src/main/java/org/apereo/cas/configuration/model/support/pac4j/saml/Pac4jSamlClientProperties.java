@@ -316,6 +316,11 @@ public class Pac4jSamlClientProperties extends Pac4jBaseClientProperties impleme
      */
     private String identityProviderEntityId;
 
+    /**
+     * Discovery service URL - URL of the discovery service used to choose the IdP.
+     */
+    private String discoveryServiceUrl;
+
     @RequiresModule(name = "cas-server-support-pac4j-webflow")
     @Getter
     @Setter
