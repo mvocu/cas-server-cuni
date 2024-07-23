@@ -200,6 +200,7 @@ dependencies {
     compileOnly "org.apereo.cas:cas-server-support-spnego"
     compileOnly "org.apereo.cas:cas-server-core-authentication-api"
     compileOnly "org.apereo.cas:cas-server-core-configuration-api"
+    compileOnly "org.apereo.cas:cas-server-support-pac4j-api"
     compileOnly "org.apereo.cas:cas-server-support-pac4j-core-clients"
 
    /* these are for yet uncommited changes */
