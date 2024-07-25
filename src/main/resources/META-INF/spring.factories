@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.apereo.cas.configuration.CasOverlayOverrideConfiguration,\
  cz.cuni.cas.mfa.gauth.config.CuniGAuthConfiguration,\
  cz.cuni.cas.mfa.trusted.config.CuniMfaTrustedDeviceConfiguration,\
- cz.cuni.cas.opensaml.config.CuniSamlClientCustomizerConfiguration
+ cz.cuni.cas.opensaml.config.CuniSamlClientDelegationConfiguration

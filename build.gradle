@@ -194,22 +194,21 @@ dependencies {
 
     compileOnly "org.springframework.boot:spring-boot:${project.springBootVersion}"
 
-    compileOnly "org.apereo.cas:cas-server-support-simple-mfa-core"
-    compileOnly "org.apereo.cas:cas-server-support-webauthn-core"
-    compileOnly "org.apereo.cas:cas-server-support-spnego"
     compileOnly "org.apereo.cas:cas-server-core-authentication-api"
     compileOnly "org.apereo.cas:cas-server-core-configuration-api"
-    compileOnly "org.apereo.cas:cas-server-support-pac4j-api"
-    compileOnly "org.apereo.cas:cas-server-support-pac4j-core-clients"
-
-   /* these are for yet uncommited changes */
-    compileOnly "org.apereo.cas:cas-server-support-webauthn"
     compileOnly "org.apereo.cas:cas-server-core-util"
     compileOnly "org.apereo.cas:cas-server-core-web-api"
-    compileOnly "org.apereo.cas:cas-server-support-webauthn-core-webflow"
     compileOnly "org.apereo.cas:cas-server-core-webflow-api"
     compileOnly "org.apereo.cas:cas-server-core-webflow-mfa-api"
     compileOnly "org.apereo.cas:cas-server-core-authentication-mfa-api"
+    compileOnly "org.apereo.cas:cas-server-support-simple-mfa-core"
+    compileOnly "org.apereo.cas:cas-server-support-webauthn-core"
+    compileOnly "org.apereo.cas:cas-server-support-spnego"
+    compileOnly "org.apereo.cas:cas-server-support-pac4j-api"
+    compileOnly "org.apereo.cas:cas-server-support-pac4j-core"
+    compileOnly "org.apereo.cas:cas-server-support-pac4j-core-clients"
+    compileOnly "org.apereo.cas:cas-server-support-webauthn"
+    compileOnly "org.apereo.cas:cas-server-support-webauthn-core-webflow"
     compileOnly "org.springframework.security:spring-security-config"
 
 }
