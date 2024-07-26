@@ -50,7 +50,7 @@ public class CuniSamlClientDelegationConfiguration {
         return new CuniSamlClientAuthenticationRequestCustomizer(casProperties);
     }
 
-    @ConditionalOnMissingBean(name = "dscoveryWebflowConfigurer")
+    @ConditionalOnMissingBean(name = "discoveryWebflowConfigurer")
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasWebflowConfigurer cuniDiscoveryWebflowConfigurer(
