@@ -10,6 +10,7 @@ import org.apereo.cas.support.pac4j.authentication.clients.DelegatedClientFactor
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
 import org.apereo.cas.web.flow.actions.WebflowActionBeanSupplier;
+import org.pac4j.core.client.Client;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -35,7 +36,7 @@ public class CuniSamlClientDelegationConfiguration {
     @ConditionalOnMissingBean(name="niaClientCustomizer")
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public DelegatedClientFactoryCustomizer<SAML2Client> niaClientCustomizer(
+    public DelegatedClientFactoryCustomizer<Client> niaClientCustomizer(
             final CasConfigurationProperties casProperties
     ) {
         return new CuniSamlClientCustomizer(casProperties);
@@ -71,7 +72,7 @@ public class CuniSamlClientDelegationConfiguration {
     @ConditionalOnMissingBean(name = CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_DISCOVERY)
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
-    public Action sendGAuthConfirmationAction(
+    public Action delegatedAuthenticationDiscoveryAction(
             final ConfigurableApplicationContext applicationContext,
             final CasConfigurationProperties casProperties,
             @Qualifier(DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME)
