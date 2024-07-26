@@ -7,12 +7,14 @@ import lombok.val;
 import org.apache.http.client.utils.URIBuilder;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.pac4j.saml.Pac4jSamlClientProperties;
+import org.apereo.cas.util.function.FunctionUtils;
 import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
 import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.jee.context.JEEContext;
+import org.pac4j.saml.client.SAML2Client;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -40,7 +42,7 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
         val clientName = configContext.getDelegatedClientNameExtractor().extract(webContext)
                 .orElseGet(() -> (String) request.getAttribute(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER));
 
-        String selectedIdP = request.getParameter(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP);
+        String selectedIdP = request.getParameter("entityID");
 
         if(selectedIdP != null) {
             LOGGER.debug("Discovery service seems to have chosen IdP [{}]", selectedIdP);
@@ -51,14 +53,30 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
             LOGGER.info("No discovery configuration for [{}], going on with redirection flow", clientName);
             return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_SUCCESS);
         }
-        respondWithExternalRedirect(requestContext, samlProperties.get().getDiscoveryServiceUrl(), clientName);
+        val client = getClient(clientName);
+        if(client == null) {
+            LOGGER.warn("No client with name [{}] found for SAML2 discovery", clientName);
+            return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_SUCCESS);
+        }
+        respondWithExternalRedirect(requestContext, samlProperties.get().getDiscoveryServiceUrl(), clientName,
+                client.getServiceProviderResolvedEntityId());
         return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_REDIRECT);
     }
 
-    private void respondWithExternalRedirect(RequestContext requestContext, String discoveryUrl, String clientName)
+    private void respondWithExternalRedirect(RequestContext requestContext, String discoveryUrl, String clientName,
+                                             String entityId)
             throws Exception {
         val builder = new URIBuilder(discoveryUrl);
+        builder.addParameter("entityID", entityId);
+        val loginUrl = casProperties.getServer().getLoginUrl();
+        val returnUrl = new StringBuilder(loginUrl);
+        if(!loginUrl.endsWith("/")) {
+            returnUrl.append("/");
+        }
+        returnUrl.append(clientName);
+        builder.addParameter("return",  returnUrl.toString());
         val url = builder.toString();
+
         LOGGER.debug("Redirecting to discovery [{}] via client [{}]", url, clientName);
         requestContext.getExternalContext().requestExternalRedirect(url);
 
@@ -71,4 +89,11 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
                 .findFirst();
     }
 
+    private SAML2Client getClient(String clientName) {
+        val client = configContext.getClients().findClient(clientName);
+        if(client.isEmpty() || !(client.get() instanceof SAML2Client)) {
+            return null;
+        }
+        return (SAML2Client) client.get();
+    }
 }
