@@ -1,6 +1,7 @@
 package cz.cuni.cas.opensaml.flow;
 
 import cz.cuni.cas.opensaml.CuniDiscoveryWebflowConstants;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
@@ -14,6 +15,7 @@ import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class CuniDiscoveryWebflowConfigurer
         extends AbstractCasWebflowConfigurer
         implements CasWebflowConfigurer {
@@ -38,6 +40,7 @@ public class CuniDiscoveryWebflowConfigurer
         val redirectFlow = this.redirectFlowRegistry.getFlowDefinition(CasWebflowConfigurer.FLOW_ID_DELEGATION_REDIRECT);
         val storeWebflowAction = redirectFlow.getState(CasWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_STORE);
 
+        LOGGER.info("Adding discovery state to the [{}] delegation authentication redirect flow.", redirectFlow.getId());
         val discoveryState = createActionState((Flow)redirectFlow,
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_DISCOVERY,
                 CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_DISCOVERY);
