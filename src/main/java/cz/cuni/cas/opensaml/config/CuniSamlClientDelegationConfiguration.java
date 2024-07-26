@@ -8,6 +8,7 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
 import org.apereo.cas.support.pac4j.authentication.clients.DelegatedClientFactoryCustomizer;
 import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.flow.CasWebflowExecutionPlanConfigurer;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
 import org.apereo.cas.web.flow.actions.WebflowActionBeanSupplier;
 import org.pac4j.core.client.Client;
@@ -29,7 +30,7 @@ import org.springframework.webflow.execution.Action;
 @AutoConfiguration
 @Configuration
 @EnableConfigurationProperties(CasConfigurationProperties.class)
-public class CuniSamlClientDelegationConfiguration {
+public class CuniSamlClientDelegationConfiguration  {
 
     private static final int WEBFLOW_CONFIGURER_ORDER = 200;
 
@@ -51,7 +52,7 @@ public class CuniSamlClientDelegationConfiguration {
         return new CuniSamlClientAuthenticationRequestCustomizer(casProperties);
     }
 
-    @ConditionalOnMissingBean(name = "discoveryWebflowConfigurer")
+    @ConditionalOnMissingBean(name = "cuniDiscoveryWebflowConfigurer")
     @Bean
     @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
     public CasWebflowConfigurer cuniDiscoveryWebflowConfigurer(
@@ -84,6 +85,15 @@ public class CuniSamlClientDelegationConfiguration {
                 .withId(CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_DISCOVERY)
                 .build()
                 .get();
+    }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    @ConditionalOnMissingBean(name = "cuniDiscoveryWebflowExecutionPlanConfigurer")
+    public CasWebflowExecutionPlanConfigurer cuniDiscoveryWebflowExecutionPlanConfigurer(
+            @Qualifier("cuniDiscoveryWebflowConfigurer")
+            final CasWebflowConfigurer cuniDiscoveryWebflowConfigurer) {
+        return plan -> plan.registerWebflowConfigurer(cuniDiscoveryWebflowConfigurer);
     }
 
 }
