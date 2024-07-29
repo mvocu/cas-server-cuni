@@ -3,6 +3,7 @@ package cz.cuni.cas.opensaml.config;
 import cz.cuni.cas.opensaml.CuniDiscoveryWebflowConstants;
 import cz.cuni.cas.opensaml.flow.CuniDiscoveryWebflowConfigurer;
 import cz.cuni.cas.opensaml.flow.CuniSamlDiscoveryAction;
+import cz.cuni.cas.opensaml.flow.CuniSamlFinalizeDiscoveryAction;
 import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
@@ -83,6 +84,23 @@ public class CuniSamlClientDelegationConfiguration  {
                 .withProperties(casProperties)
                 .withAction(() -> new CuniSamlDiscoveryAction(casProperties, configContext))
                 .withId(CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_DISCOVERY)
+                .build()
+                .get();
+    }
+
+    @ConditionalOnMissingBean(name = CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_FINALIZE_DISCOVERY)
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    public Action delegatedAuthenticationFinalizeDiscoveryAction(
+            final ConfigurableApplicationContext applicationContext,
+            final CasConfigurationProperties casProperties,
+            @Qualifier(DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME)
+            final DelegatedClientAuthenticationConfigurationContext configContext) {
+        return WebflowActionBeanSupplier.builder()
+                .withApplicationContext(applicationContext)
+                .withProperties(casProperties)
+                .withAction(() -> new CuniSamlFinalizeDiscoveryAction(casProperties, configContext))
+                .withId(CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_FINALIZE_DISCOVERY)
                 .build()
                 .get();
     }

@@ -1,5 +1,6 @@
 package cz.cuni.cas.opensaml.config;
 
+import cz.cuni.cas.opensaml.CuniDiscoveryWebflowConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -7,9 +8,11 @@ import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.pac4j.saml.Pac4jSamlClientProperties;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
+import org.apereo.cas.web.support.WebUtils;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.saml.client.SAML2Client;
+import org.springframework.webflow.execution.RequestContextHolder;
 
 import java.util.Optional;
 
@@ -26,8 +29,16 @@ public class CuniSamlClientAuthenticationRequestCustomizer implements DelegatedC
      */
     @Override
     public void customize(IndirectClient client, WebContext webContext) {
-        val samlProperties = getClientProperties(client.getName()).get();
         val samlClient = (SAML2Client)client;
+        String entityID = RequestContextHolder.getRequestContext().getConversationScope()
+                .getString(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP);
+        if(entityID != null) {
+            LOGGER.debug("Setting discovered identity provider entity id to [{}] for SAML2 client [{}]",
+                    entityID, client.getName());
+            samlClient.getConfiguration().setIdentityProviderEntityId(entityID);
+            return;
+        }
+        val samlProperties = getClientProperties(client.getName()).get();
         if(samlProperties.getIdentityProviderEntityId() != null &&
                 !samlProperties.getIdentityProviderEntityId().isEmpty()) {
             LOGGER.debug("Setting identity provider entity id to [{}] for SAML2 client [{}]",

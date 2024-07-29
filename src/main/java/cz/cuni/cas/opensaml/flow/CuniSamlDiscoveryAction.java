@@ -18,6 +18,7 @@ import org.pac4j.saml.client.SAML2Client;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import java.net.URI;
 import java.util.Optional;
 
 
@@ -68,13 +69,11 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
             throws Exception {
         val builder = new URIBuilder(discoveryUrl);
         builder.addParameter("entityID", entityId);
-        val loginUrl = casProperties.getServer().getLoginUrl();
-        val returnUrl = new StringBuilder(loginUrl);
-        if(!loginUrl.endsWith("/")) {
-            returnUrl.append("/");
-        }
-        returnUrl.append(clientName);
-        builder.addParameter("return",  returnUrl.toString());
+        val returnBuilder = new URIBuilder(requestContext.getFlowExecutionUrl());
+        returnBuilder.setParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, clientName);
+        returnBuilder.addParameter("execution", requestContext.getFlowExecutionContext().getKey().toString());
+        returnBuilder.addParameter("_eventId", "success");
+        builder.addParameter("return",  returnBuilder.toString());
         val url = builder.toString();
 
         LOGGER.debug("Redirecting to discovery [{}] via client [{}]", url, clientName);
