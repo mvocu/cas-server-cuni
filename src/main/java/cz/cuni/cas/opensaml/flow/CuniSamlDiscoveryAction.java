@@ -69,7 +69,7 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
             throws Exception {
         val builder = new URIBuilder(discoveryUrl);
         builder.addParameter("entityID", entityId);
-        val returnBuilder = new URIBuilder(requestContext.getFlowExecutionUrl());
+        val returnBuilder = new URIBuilder(casProperties.getServer().getLoginUrl());
         returnBuilder.setParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, clientName);
         returnBuilder.addParameter("execution", requestContext.getFlowExecutionContext().getKey().toString());
         returnBuilder.addParameter("_eventId", "success");
