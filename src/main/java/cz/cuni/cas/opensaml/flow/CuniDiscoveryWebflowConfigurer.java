@@ -49,7 +49,21 @@ public class CuniDiscoveryWebflowConfigurer
                 CasWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_STORE);
         createTransitionForState(discoveryState,
                 CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_REDIRECT,
-                CasWebflowConstants.STATE_ID_SUCCESS);
+                CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY);
+
+        val factory = createExternalRedirectViewFactory(
+                "requestScope." +
+                        CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL);
+        val viewState = createViewState((Flow)redirectFlow,
+                CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY, factory);
+
+        val finalizeState = createActionState((Flow)redirectFlow,
+                CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_FINALIZE_DISCOVERY,
+                CuniDiscoveryWebflowConstants.ACTION_ID_DELEGATED_AUTHENTICATION_FINALIZE_DISCOVERY);
+
+        createStateDefaultTransition(viewState, finalizeState);
+        createStateDefaultTransition(finalizeState, storeWebflowAction);
+
         createStateDefaultTransition(discoveryState, storeWebflowAction);
         setStartState((Flow)redirectFlow, discoveryState);
     }
