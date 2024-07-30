@@ -34,6 +34,7 @@ public class CuniSamlClientAuthenticationRequestCustomizer implements DelegatedC
         val entity = RequestContextHolder.getRequestContext().getConversationScope()
                 .get(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP,
                         CuniDiscoverySelectedIdP.class);
+
         if(entity != null && entity.getClientName().equals(client.getName())) {
             LOGGER.debug("Setting discovered identity provider entity id to [{}] for SAML2 client [{}]",
                     entity, client.getName());

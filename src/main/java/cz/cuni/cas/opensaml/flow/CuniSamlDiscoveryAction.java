@@ -59,6 +59,11 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
             LOGGER.warn("No client with name [{}] found for SAML2 discovery", clientName);
             return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_SUCCESS);
         }
+        val discoveryUrl = samlProperties.get().getDiscoveryServiceUrl();
+        if( discoveryUrl == null || String.valueOf(discoveryUrl).isEmpty()) {
+            LOGGER.warn("No discovery URL for client [{}] found", clientName);
+            return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_SUCCESS);
+        }
         respondWithExternalRedirect(requestContext, samlProperties.get().getDiscoveryServiceUrl(), clientName,
                 client.getServiceProviderResolvedEntityId());
         return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_REDIRECT);
