@@ -52,8 +52,10 @@ public class CuniDiscoveryWebflowConfigurer
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY);
 
         val factory = createExternalRedirectViewFactory(
-                "requestScope." +
-                        CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL);
+                "#{requestScope." +
+                        CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL +
+                        "}%26execution%3D#{flowExecutionKey}"
+                );
         val viewState = createViewState((Flow)redirectFlow,
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY, factory);
 
