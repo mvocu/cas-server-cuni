@@ -1,6 +1,7 @@
 package cz.cuni.cas.opensaml.config;
 
 import cz.cuni.cas.opensaml.CuniDiscoveryWebflowConstants;
+import cz.cuni.cas.opensaml.flow.CuniDiscoverySelectedIdP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -30,12 +31,15 @@ public class CuniSamlClientAuthenticationRequestCustomizer implements DelegatedC
     @Override
     public void customize(IndirectClient client, WebContext webContext) {
         val samlClient = (SAML2Client)client;
-        String entityID = RequestContextHolder.getRequestContext().getConversationScope()
-                .getString(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP);
-        if(entityID != null) {
+        val entity = RequestContextHolder.getRequestContext().getConversationScope()
+                .get(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP,
+                        CuniDiscoverySelectedIdP.class);
+        if(entity != null && entity.getClientName().equals(client.getName())) {
             LOGGER.debug("Setting discovered identity provider entity id to [{}] for SAML2 client [{}]",
-                    entityID, client.getName());
-            samlClient.getConfiguration().setIdentityProviderEntityId(entityID);
+                    entity, client.getName());
+            samlClient.getConfiguration().setIdentityProviderEntityId(entity.getEntityID());
+            RequestContextHolder.getRequestContext().getConversationScope()
+                    .remove(CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP);
             return;
         }
         val samlProperties = getClientProperties(client.getName()).get();
