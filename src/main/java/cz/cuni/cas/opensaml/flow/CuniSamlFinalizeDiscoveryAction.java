@@ -36,13 +36,13 @@ public class CuniSamlFinalizeDiscoveryAction  extends BaseCasWebflowAction {
                 .orElseGet(() -> (String) request.getAttribute(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER));
 
         String selectedIdP = request.getParameter("entityID");
-        LOGGER.debug("Saving[{}] as entityID from discovery service to conversation scope");
+        LOGGER.debug("Saving [{}] as entityID from discovery service to conversation scope", selectedIdP);
         if(selectedIdP != null) {
             requestContext.getConversationScope().put(
                     CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP,
                     new CuniDiscoverySelectedIdP(selectedIdP, clientName)
             );
         }
-        return null;
+        return this.success();
     }
 }
