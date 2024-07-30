@@ -82,8 +82,10 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
         val url = builder.toString();
 
         LOGGER.debug("Redirecting to discovery [{}] via client [{}]", url, clientName);
-        requestContext.getExternalContext().requestExternalRedirect(url);
-
+        //requestContext.getExternalContext().requestExternalRedirect(url);
+        requestContext.getRequestScope().put(
+                CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL,
+                url);
     }
 
     private Optional<Pac4jSamlClientProperties> getClientProperties(String name) {
