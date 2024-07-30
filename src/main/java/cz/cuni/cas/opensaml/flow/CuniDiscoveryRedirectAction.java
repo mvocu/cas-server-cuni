@@ -16,7 +16,7 @@ public class CuniDiscoveryRedirectAction extends AbstractAction {
         this.resourceUri = parser.parseExpression(
                 "#{requestScope." +
                         CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL +
-                        "}%26execution%3D#{flowExecutionKey}",
+                        "}%26execution%3D#{getFlowExecutionContext().getKey()}",
                 (new FluentParserContext())
                         .expectResult(String.class)
                         .template()
