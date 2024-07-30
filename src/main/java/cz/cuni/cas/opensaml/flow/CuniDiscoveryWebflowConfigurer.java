@@ -11,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.Flow;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
+import org.springframework.webflow.engine.support.ActionExecutingViewFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,11 +52,15 @@ public class CuniDiscoveryWebflowConfigurer
                 CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_REDIRECT,
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY);
 
+        /*
         val factory = createExternalRedirectViewFactory(
                 "#{requestScope." +
                         CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL +
                         "}%26execution%3D#{flowExecutionKey}"
                 );
+
+         */
+        val factory = new ActionExecutingViewFactory(new CuniDiscoveryRedirectAction(getSpringExpressionParser()));
         val viewState = createViewState((Flow)redirectFlow,
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY, factory);
 
