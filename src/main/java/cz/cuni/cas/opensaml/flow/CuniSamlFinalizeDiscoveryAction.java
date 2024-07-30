@@ -29,12 +29,18 @@ public class CuniSamlFinalizeDiscoveryAction  extends BaseCasWebflowAction {
     @Override
     protected Event doExecute(RequestContext requestContext) throws Exception {
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
+        val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
+
+        val webContext = new JEEContext(request, response);
+        val clientName = configContext.getDelegatedClientNameExtractor().extract(webContext)
+                .orElseGet(() -> (String) request.getAttribute(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER));
+
         String selectedIdP = request.getParameter("entityID");
         LOGGER.debug("Saving[{}] as entityID from discovery service to conversation scope");
         if(selectedIdP != null) {
             requestContext.getConversationScope().put(
                     CuniDiscoveryWebflowConstants.CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP,
-                    selectedIdP
+                    new CuniDiscoverySelectedIdP(selectedIdP, clientName)
             );
         }
         return null;
