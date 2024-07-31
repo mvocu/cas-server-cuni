@@ -167,7 +167,6 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-trusted-mfa-jdbc:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-spnego-webflow:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
-    implementation "org.apereo.cas:cas-server-support-saml-idp-discovery"
 
     /* for GAuth notifications */
     implementation "org.apereo.cas:cas-server-support-websockets:${project.'cas.version'}"
