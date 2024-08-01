@@ -8,6 +8,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.configuration.model.support.pac4j.saml.Pac4jSamlClientProperties;
 import org.apereo.cas.util.function.FunctionUtils;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.actions.BaseCasWebflowAction;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
 import org.apereo.cas.web.support.WebUtils;
@@ -64,28 +65,21 @@ public class CuniSamlDiscoveryAction extends BaseCasWebflowAction {
             LOGGER.warn("No discovery URL for client [{}] found", clientName);
             return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_SUCCESS);
         }
-        respondWithExternalRedirect(requestContext, samlProperties.get().getDiscoveryServiceUrl(), clientName,
-                client.getServiceProviderResolvedEntityId());
+        val requestScope = requestContext.getRequestScope();
+        // set request scope variables for the redirect view action
+        requestScope.put(
+                CuniDiscoveryWebflowConstants.VAR_ID_DELEGATED_AUTHENTICATION_DISCOVERY_URL,
+                samlProperties.get().getDiscoveryServiceUrl()
+                );
+        requestScope.put(
+                CuniDiscoveryWebflowConstants.VAR_ID_DELEGATED_AUTHENTICATION_CLIENT_NAME,
+                clientName
+        );
+        requestScope.put(
+                CuniDiscoveryWebflowConstants.VAR_ID_DELEGATED_AUTHENTICATION_ENTITY_ID,
+                client.getServiceProviderResolvedEntityId()
+        );
         return new Event(this, CuniDiscoveryWebflowConstants.TRANSITION_ID_DELEGATED_AUTHENTICATION_DISCOVERY_REDIRECT);
-    }
-
-    private void respondWithExternalRedirect(RequestContext requestContext, String discoveryUrl, String clientName,
-                                             String entityId)
-            throws Exception {
-        val builder = new URIBuilder(discoveryUrl);
-        builder.addParameter("entityID", entityId);
-        val returnBuilder = new URIBuilder(casProperties.getServer().getLoginUrl());
-        returnBuilder.setParameter(Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, clientName);
-        //returnBuilder.addParameter("execution", requestContext.getFlowExecutionContext().getKey().toString());
-        returnBuilder.addParameter("_eventId", "success");
-        builder.addParameter("return",  returnBuilder.toString());
-        val url = builder.toString();
-
-        LOGGER.debug("Redirecting to discovery [{}] via client [{}]", url, clientName);
-        //requestContext.getExternalContext().requestExternalRedirect(url);
-        requestContext.getRequestScope().put(
-                CuniDiscoveryWebflowConstants.REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL,
-                url);
     }
 
     private Optional<Pac4jSamlClientProperties> getClientProperties(String name) {

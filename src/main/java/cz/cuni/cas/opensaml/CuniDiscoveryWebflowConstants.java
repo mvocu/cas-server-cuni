@@ -15,4 +15,9 @@ public class CuniDiscoveryWebflowConstants {
     public static final String CONVERSATION_VAR_ID_DELEGATED_AUTHENTICATION_IDP = "samlSelectedIdP";
 
     public static final String REQUEST_VAR_ID_DELEGATED_AUTHENTICATION_REDIRECT_URL = "redirectTo";
+    public static final String VAR_ID_DELEGATED_AUTHENTICATION_DISCOVERY_URL = "discoveryUrl";
+    public static final String VAR_ID_DELEGATED_AUTHENTICATION_CLIENT_NAME = "clientName";
+    public static final String VAR_ID_DELEGATED_AUTHENTICATION_ENTITY_ID = "entityId";
+
+    public static final String PROPERTY_ID_WEBFLOW_KEY = "flowKey";
 }

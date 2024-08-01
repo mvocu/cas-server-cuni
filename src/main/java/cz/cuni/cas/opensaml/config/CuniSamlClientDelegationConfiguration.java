@@ -8,9 +8,7 @@ import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pac4j.client.DelegatedClientAuthenticationRequestCustomizer;
 import org.apereo.cas.support.pac4j.authentication.clients.DelegatedClientFactoryCustomizer;
-import org.apereo.cas.web.flow.CasWebflowConstants;
-import org.apereo.cas.web.flow.CasWebflowExecutionPlanConfigurer;
-import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.*;
 import org.apereo.cas.web.flow.actions.WebflowActionBeanSupplier;
 import org.pac4j.core.client.Client;
 import org.pac4j.saml.client.SAML2Client;
@@ -23,7 +21,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 import org.springframework.webflow.execution.Action;
@@ -63,10 +60,12 @@ public class CuniSamlClientDelegationConfiguration  {
             final FlowDefinitionRegistry loginFlowDefinitionRegistry,
             @Qualifier("delegatedClientRedirectFlowRegistry")
             final FlowDefinitionRegistry delegatedClientRedirectFlowRegistry,
+            @Qualifier(DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME)
+            final DelegatedClientAuthenticationConfigurationContext configContext,
             @Qualifier(CasWebflowConstants.BEAN_NAME_FLOW_BUILDER_SERVICES)
             final FlowBuilderServices flowBuilderServices) {
         val cfg = new CuniDiscoveryWebflowConfigurer(flowBuilderServices, loginFlowDefinitionRegistry,
-                delegatedClientRedirectFlowRegistry, applicationContext, casProperties);
+                delegatedClientRedirectFlowRegistry, configContext, applicationContext, casProperties);
         cfg.setOrder(WEBFLOW_CONFIGURER_ORDER);
         return cfg;
     }

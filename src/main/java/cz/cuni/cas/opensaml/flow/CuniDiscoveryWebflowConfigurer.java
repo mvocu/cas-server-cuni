@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationWebflowManager;
 import org.apereo.cas.web.flow.configurer.AbstractCasWebflowConfigurer;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,14 +25,17 @@ public class CuniDiscoveryWebflowConfigurer
 
 
     private final FlowDefinitionRegistry redirectFlowRegistry;
+    private final DelegatedClientAuthenticationConfigurationContext configContext;
 
     public CuniDiscoveryWebflowConfigurer(FlowBuilderServices flowBuilderServices,
-                                             FlowDefinitionRegistry mainFlowDefinitionRegistry,
-                                             FlowDefinitionRegistry redirectFlowRegistry,
-                                             ConfigurableApplicationContext applicationContext,
-                                             CasConfigurationProperties casProperties) {
+                                          FlowDefinitionRegistry mainFlowDefinitionRegistry,
+                                          FlowDefinitionRegistry redirectFlowRegistry,
+                                          DelegatedClientAuthenticationConfigurationContext configContext,
+                                          ConfigurableApplicationContext applicationContext,
+                                          CasConfigurationProperties casProperties) {
         super(flowBuilderServices, mainFlowDefinitionRegistry, applicationContext, casProperties);
         this.redirectFlowRegistry = redirectFlowRegistry;
+        this.configContext = configContext;
     }
 
     /**
@@ -60,7 +65,8 @@ public class CuniDiscoveryWebflowConfigurer
                 );
 
          */
-        val factory = new ActionExecutingViewFactory(new CuniDiscoveryRedirectAction(getSpringExpressionParser()));
+        val factory = new ActionExecutingViewFactory(
+                new CuniDiscoveryRedirectAction(getCasProperties(), configContext));
         val viewState = createViewState((Flow)redirectFlow,
                 CuniDiscoveryWebflowConstants.STATE_ID_DELEGATED_AUTHENTICATION_REDIRECT_TO_DISCOVERY, factory);
 
