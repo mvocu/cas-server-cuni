@@ -1,6 +1,7 @@
 package cz.cuni.cas.opensaml.config;
 
 import cz.cuni.cas.opensaml.CuniDiscoveryWebflowConstants;
+import cz.cuni.cas.opensaml.controller.CuniSamlNavigationController;
 import cz.cuni.cas.opensaml.flow.CuniDiscoveryWebflowConfigurer;
 import cz.cuni.cas.opensaml.flow.CuniSamlDiscoveryAction;
 import cz.cuni.cas.opensaml.flow.CuniSamlFinalizeDiscoveryAction;
@@ -111,6 +112,17 @@ public class CuniSamlClientDelegationConfiguration  {
             @Qualifier("cuniDiscoveryWebflowConfigurer")
             final CasWebflowConfigurer cuniDiscoveryWebflowConfigurer) {
         return plan -> plan.registerWebflowConfigurer(cuniDiscoveryWebflowConfigurer);
+    }
+
+    @Bean
+    @RefreshScope(proxyMode = ScopedProxyMode.DEFAULT)
+    @ConditionalOnMissingBean(name = "cuniSamlNavigationController")
+    public CuniSamlNavigationController cuniSamlNavigationController(
+            final CasConfigurationProperties casProperties,
+            @Qualifier(DelegatedClientAuthenticationConfigurationContext.DEFAULT_BEAN_NAME)
+            final DelegatedClientAuthenticationConfigurationContext configContext)
+    {
+        return new CuniSamlNavigationController(casProperties, configContext);
     }
 
 }
