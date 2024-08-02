@@ -40,7 +40,7 @@ public class CuniSamlNavigationController {
             final String redirectId,
             final HttpServletRequest request,
             final HttpServletResponse response) throws Exception {
-        val ticket = configContext.getTicketRegistry().getTicket("TST-" + redirectId, TransientSessionTicket.class);
+        val ticket = configContext.getTicketRegistry().getTicket(redirectId, TransientSessionTicket.class);
         String entityId = request.getParameter("entityID");
         if(ticket != null) {
             return new DynamicHtmlView(buildRedirectPostContent(ticket, entityId));

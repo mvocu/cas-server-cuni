@@ -90,6 +90,6 @@ public class CuniDiscoveryRedirectAction extends AbstractAction {
         String id = UUID.randomUUID().toString();
         val ticket = transientFactory.create(id, properties);
         configContext.getTicketRegistry().addTicket(ticket);
-        return id;
+        return ticket.getId();
     }
 }
