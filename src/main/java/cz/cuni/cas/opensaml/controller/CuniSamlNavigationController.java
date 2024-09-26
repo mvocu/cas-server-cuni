@@ -43,6 +43,7 @@ public class CuniSamlNavigationController {
         val ticket = configContext.getTicketRegistry().getTicket(redirectId, TransientSessionTicket.class);
         String entityId = request.getParameter("entityID");
         if(ticket != null) {
+            configContext.getTicketRegistry().deleteTicket(ticket.getId());
             return new DynamicHtmlView(buildRedirectPostContent(ticket, entityId));
         }
         return new RedirectView(casProperties.getServer().getLoginUrl());

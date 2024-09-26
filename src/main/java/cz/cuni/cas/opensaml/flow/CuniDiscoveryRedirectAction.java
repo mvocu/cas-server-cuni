@@ -91,5 +91,15 @@ public class CuniDiscoveryRedirectAction extends AbstractAction {
         val ticket = transientFactory.create(id, properties);
         configContext.getTicketRegistry().addTicket(ticket);
         return ticket.getId();
+        /*
+        webContext.getRequestParameter(RedirectionActionBuilder.ATTRIBUTE_FORCE_AUTHN)
+            .or(() -> Optional.of(Boolean.toString(RegisteredServiceProperty.RegisteredServiceProperties.DELEGATED_AUTHN_FORCE_AUTHN.isAssignedTo(registeredService))))
+            .filter(value -> StringUtils.equalsIgnoreCase(value, "true"))
+            .ifPresent(attr -> properties.put(RedirectionActionBuilder.ATTRIBUTE_FORCE_AUTHN, true));
+        webContext.getRequestParameter(RedirectionActionBuilder.ATTRIBUTE_PASSIVE)
+            .or(() -> Optional.of(Boolean.toString(RegisteredServiceProperty.RegisteredServiceProperties.DELEGATED_AUTHN_PASSIVE_AUTHN.isAssignedTo(registeredService))))
+            .filter(value -> StringUtils.equalsIgnoreCase(value, "true"))
+            .ifPresent(attr -> properties.put(RedirectionActionBuilder.ATTRIBUTE_PASSIVE, true));
+         */
     }
 }

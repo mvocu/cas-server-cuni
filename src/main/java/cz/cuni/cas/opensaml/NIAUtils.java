@@ -33,6 +33,7 @@ public class NIAUtils {
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_FAMILY_NAME(true, true));
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.DATE_OF_BIRTH(true, false));
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.CURRENT_ADDRESS(true, false));
+        anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.GENDER(true, false));
         /* NIA attributes */
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_EMAIL, "email", null, false));
         anyElement.getUnknownXMLObjects().add(RequestedAttributeTemplates.create(NIA_ATTRIBUTE_PHONE, "phone", null, false));
