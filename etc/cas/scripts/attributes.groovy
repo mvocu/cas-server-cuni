@@ -1,3 +1,9 @@
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext
+import org.springframework.web.context.ConfigurableWebApplicationContext
+import org.springframework.web.context.request.RequestAttributes
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.context.request.ServletRequestAttributes
+
 import java.util.*
 
 def Map<String, List<Object>> run(final Object... args) {
@@ -24,6 +30,21 @@ def Map<String, List<Object>> run(final Object... args) {
 	    values["email_verified"] = false
        }
     }
+
+    def configContext =
+            ((ConfigurableWebApplicationContext)appContext)
+                    .getBean("delegatedClientAuthenticationConfigurationContext", DelegatedClientAuthenticationConfigurationContext.class)
+    def requestAttrs = RequestContextHolder.getRequestAttributes();
+    def request = (requestAttrs instanceof ServletRequestAttributes)
+            ? ((ServletRequestAttributes)requestAttrs).getRequest() : null
+
+    def clientName = configContext?.getDelegatedClientNameExtractor()?.extract(request)
+            ?.orElseGet(() -> (String) requestAttrs.getAttribute("client_name", RequestAttributes.SCOPE_REQUEST))
+
+    def conversation = org.springframework.webflow.execution.RequestContextHolder.getRequestContext()?.getConversationScope()
+
+    values["client"] = clientName
+    values["remote_entity_id"] = conversation?.get("samlSelectedIdP")?.getEntityId()
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values)
 
