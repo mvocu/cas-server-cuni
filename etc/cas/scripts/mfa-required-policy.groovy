@@ -26,6 +26,7 @@ def String run(final Object... args) {
     def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
     def hasSimple = authentication.principal.attributes?.mobile ? true : false
     def requestMfaMethod = httpRequest.getParameterValues("acr_values")  ?:  ( httpRequest.getParameterValues("authn_method") ?: [] )
+    def requestMfaLevel = httpRequest.getParameterValues("mfa")
 
     def mfaMethod = "mfa-composite"
 
@@ -51,6 +52,7 @@ def String run(final Object... args) {
     def availableHandlers = [ ] 
     def preferredHandlers = [ ]
     def configuredHandlers = ["mfa-webauthn", "mfa-gauth", "mfa-simple"]
+
     if(hasWebAuthn) { availableHandlers.add("mfa-webauthn") }
     if(hasGAuth)    { availableHandlers.add("mfa-gauth"); preferredHandlers.add("mfa-gauth") }
     if(hasSimple)   { availableHandlers.add("mfa-simple") }
@@ -60,8 +62,8 @@ def String run(final Object... args) {
     flowScope?.put("cuniMfaAvailableHandlers", availableHandlers)
     flowScope?.put("cuniMfaPreferredHandlers", preferredHandlers)
 
-    logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}] and request method [{}], flow scope [{}]", 
-	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, flowScope)
+    logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]", 
+	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, requestMfaLevel, flowScope)
     logger.info("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
  
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
@@ -81,6 +83,10 @@ def String run(final Object... args) {
     if(requestMfaMethod && configuredHandlers.contains(requestMfaMethod)) {
         mfaRequired = true
         mfaMethod = requestMfaMethod
+    }
+
+    if(requestMfaLevel && requestMfaLevel.contains("true")) {
+        mfaRequired = true
     }
 
     if(!principalMfaPolicy.contains("none") || registeredService.getProperties()?.get("mfaAllowRegistration")?.contains("true")) {

@@ -41,11 +41,10 @@ def Map<String, List<Object>> run(final Object... args) {
     def clientName = configContext?.getDelegatedClientNameExtractor()?.extract(request)
             ?.orElseGet(() -> (String) requestAttrs.getAttribute("client_name", RequestAttributes.SCOPE_REQUEST))
 
+    def conversation = org.springframework.webflow.execution.RequestContextHolder.getRequestContext()?.getConversationScope()
+
     values["client"] = clientName
-
-    conversation = org.springframework.webflow.execution.RequestContextHolder.getRequestContext()?.getConversationScope()
-
-    value["remote_entity_id"] = conversation?.get("samlSelectedIdP")?.getEntityId()
+    values["remote_entity_id"] = conversation?.get("samlSelectedIdP")?.getEntityId()
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values)
 
