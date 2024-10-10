@@ -25,6 +25,10 @@
                 </div>
             </section>
 
+            <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
+                <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}"/>
+            </div>
+
             <form method="post" id="fmnotify" th:object="${credential}" th:action="@{/login}" style="display:none">
                 <input type="hidden" name="_eventId_submit" value="Login"/>
                 <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
@@ -82,9 +86,6 @@
         </span>
 
         <form method="post" id="fm1" th:object="${credential}" th:action="@{/login}">
-            <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
-                <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}"/>
-            </div>
             <input type="hidden" name="_eventId_submit" value="Login"/>
             <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
             <input type="hidden" name="geolocation"/>
