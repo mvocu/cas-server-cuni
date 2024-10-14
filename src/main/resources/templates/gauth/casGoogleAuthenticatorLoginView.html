@@ -18,16 +18,16 @@
 
         <p th:utext="#{screen.authentication.gauth.selecteddevice(${registeredDevice.name})}"></p>
 
+        <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
+            <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}"/>
+        </div>
+
         <span th:if="${gauthChannel}">
             <section>
                 <div id="gautherror" class="banner banner-danger alert alert-danger banner-dismissible" style="display:none;">
                     <p th:utext="#{cas.authn.gauth.fail}">Error</p>
                 </div>
             </section>
-
-            <div id="msg" class="banner banner-danger alert alert-danger my-2" th:if="${#fields.hasErrors('*')}">
-                <span th:each="err : ${#fields.errors('*')}" th:utext="${err + ' '}"/>
-            </div>
 
             <form method="post" id="fmnotify" th:object="${credential}" th:action="@{/login}" style="display:none">
                 <input type="hidden" name="_eventId_submit" value="Login"/>
