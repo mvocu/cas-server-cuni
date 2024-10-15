@@ -1,10 +1,6 @@
-import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext
-import org.springframework.web.context.ConfigurableWebApplicationContext
-import org.springframework.web.context.request.RequestAttributes
-import org.springframework.web.context.request.RequestContextHolder
-import org.springframework.web.context.request.ServletRequestAttributes
-
-import java.util.*
+import org.apereo.cas.authentication.principal.ClientCredential
+import org.pac4j.saml.credentials.SAML2Credentials
+import org.springframework.webflow.execution.RequestContextHolder
 
 def Map<String, List<Object>> run(final Object... args) {
     def username = args[0]
@@ -31,20 +27,12 @@ def Map<String, List<Object>> run(final Object... args) {
        }
     }
 
-    def configContext =
-            ((ConfigurableWebApplicationContext)appContext)
-                    .getBean("delegatedClientAuthenticationConfigurationContext", DelegatedClientAuthenticationConfigurationContext.class)
-    def requestAttrs = RequestContextHolder.getRequestAttributes();
-    def request = (requestAttrs instanceof ServletRequestAttributes)
-            ? ((ServletRequestAttributes)requestAttrs).getRequest() : null
+    def requestContext = RequestContextHolder.getRequestContext()
+    def clientCredential = requestContext.getRequestScope()?.get("credential", ClientCredential.class)
 
-    def clientName = configContext?.getDelegatedClientNameExtractor()?.extract(request)
-            ?.orElseGet(() -> (String) requestAttrs.getAttribute("client_name", RequestAttributes.SCOPE_REQUEST))
-
-    def conversation = org.springframework.webflow.execution.RequestContextHolder.getRequestContext()?.getConversationScope()
-
-    values["client"] = clientName
-    values["remote_entity_id"] = conversation?.get("samlSelectedIdP")?.getEntityId()
+    values["auth_delegated_client"] = clientCredential?.getClientName()
+    values["auth_saml2_credentials"] = (clientCredential?.getCredentials() instanceof SAML2Credentials)
+            ? clientCredential?.getCredentials()?.toString() : null
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values)
 
