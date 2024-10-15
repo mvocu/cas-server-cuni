@@ -11,7 +11,7 @@ def Map<String, List<Object>> run(final Object... args) {
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
 
-    def values = [:]
+    def values = ["username": username]
 
     def matcher =  (attributes["cunimailverificationexpiration"] =~ /(\d\d\d\d)(\d\d)(\d\d)\d\d\d\d\d\dZ/)
     if( matcher ) {
