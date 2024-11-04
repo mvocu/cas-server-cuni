@@ -1,6 +1,7 @@
 import org.apereo.cas.authentication.principal.ClientCredential
 import org.pac4j.saml.credentials.SAML2Credentials
 import org.springframework.webflow.execution.RequestContextHolder
+import groovy.json.JsonOutput
 
 def Map<String, List<Object>> run(final Object... args) {
     def username = args[0]
@@ -32,7 +33,7 @@ def Map<String, List<Object>> run(final Object... args) {
 
     values["auth_delegated_client"] = clientCredential?.getClientName()
     values["auth_saml2_credentials"] = (clientCredential?.getCredentials() instanceof SAML2Credentials)
-            ? clientCredential?.getCredentials()?.toString() : null
+            ? JsonOutput.toJson(clientCredential?.getCredentials()) : null
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values)
 
