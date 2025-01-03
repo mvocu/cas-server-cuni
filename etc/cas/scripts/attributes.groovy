@@ -12,7 +12,7 @@ def Map<String, List<Object>> run(final Object... args) {
 
     logger.debug("[{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
 
-    def values = ["username": username]
+    def values = ["username" : username ]
 
     def matcher =  (attributes["cunimailverificationexpiration"] =~ /(\d\d\d\d)(\d\d)(\d\d)\d\d\d\d\d\dZ/)
     if( matcher ) {
@@ -29,13 +29,64 @@ def Map<String, List<Object>> run(final Object... args) {
     }
 
     def requestContext = RequestContextHolder.getRequestContext()
-    def clientCredential = requestContext.getRequestScope()?.get("credential", ClientCredential.class)
+    def clientCredential = requestContext?.getRequestScope()?.get("credential", ClientCredential.class)
 
     values["auth_delegated_client"] = clientCredential?.getClientName()
-    values["auth_saml2_credentials"] = (clientCredential?.getCredentials() instanceof SAML2Credentials)
-            ? JsonOutput.toJson(clientCredential?.getCredentials()) : null
+    values["auth_saml2_credentials"] = (clientCredential?.getCredentials() instanceof SAML2Credentials) 
+	? JsonOutput.toJson(clientCredential?.getCredentials()) : null 
 
-    logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values)
+    // amr as presented by remote client
+    def amr = attributes["amr"] ?: []
+    if(clientCredential?.getCredentials() instanceof SAML2Credentials) {
+        def saml2creds = (SAML2Credentials)clientCredential.getCredentials()
+        amr.addAll(saml2creds.authnContexts)
+    }
+    values["auth_amr"] = amr
+
+    // define LoA based on remote client and amr
+    def loa = "http://cas.cuni.cz/LoA/none"
+    logger.debug("XXX Producing LoA based on remote client [{}] and authentication method [{}]", values["auth_delegated_client"], amr)
+    logger.debug("XXX typeof amr [{}]", amr.class.simpleName)
+    logger.debug("XXX typeof amr[0] [{}]", (amr instanceof List && amr.size() > 0) ? amr.first().class.simpleName : null)
+
+    switch(values["auth_delegated_client"]) {
+
+	case "NIA":
+		if(amr.contains("http://eidas.europa.eu/LoA/low")) {
+			loa = "http://cas.cuni.cz/LoA/low";
+		} else if(amr.contains("http://eidas.europa.eu/LoA/substantial")) {
+			loa = "http://cas.cuni.cz/LoA/substantial"
+		} else if(amr.contains("http://eidas.europa.eu/LoA/high")) {
+			loa = "http://cas.cuni.cz/LoA/high"
+		}
+		break;
+
+	case "svipeid":
+		if(amr.contains("face")) {
+                        loa = "http://cas.cuni.cz/LoA/high"
+		} else if(amr.contains("user")) {
+                        loa = "http://cas.cuni.cz/LoA/substantial"
+		} else {
+			loa = "http://cas.cuni.cz/LoA/substantial"
+		}
+		break;
+
+	case "eduid":
+		loa = "http://cas.cuni.cz/LoA/none"
+                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+		break;
+
+	case "edugain":
+		loa = "http://cas.cuni.cz/LoA/none"
+                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+		break;
+
+	default:
+		break;
+    }
+    values["auth_loa"] = loa
+
+    //logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}] from context [{}]", this.class.simpleName, username, values, RequestContextHolder.getRequestContext()) 
 
     return values
 }
