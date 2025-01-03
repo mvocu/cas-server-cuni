@@ -12,7 +12,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.StaticMessageSource;
 import org.springframework.ui.context.support.ResourceBundleThemeSource;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,7 +48,7 @@ public class DefaultCasThemeSource extends ResourceBundleThemeSource {
                         properties.forEach((key, value) -> {
                             HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
                             List.of(request.getLocale(), Locale.forLanguageTag("cs-CZ"), Locale.getDefault()).forEach( locale -> {
-                                LOGGER.trace("Loading theme property [{}] from [{}] for locale [{}]", key, locale, path);
+                                LOGGER.trace("Loading theme property [{}] from [{}] for locale [{}]", key, path, locale);
                                 source.addMessage(key.toString(), locale, value.toString());
                             });
                         });
