@@ -75,7 +75,7 @@ def Map<String, List<Object>> run(final Object... args) {
             loa = "http://cas.cuni.cz/LoA/none"
             logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
             eass = attributes["edu_assurance"]
-            if(eass.metaClass.respondsTo(eass, "contains")) {
+            if(eass !== null && eass.metaClass.respondsTo(eass, "contains")) {
                 if(eass.contains("https://refeds.org/assurance/IAP/high")) {
                     loa = "http://cas.cuni.cz/LoA/high"
                 } else if(eass.contains("https://refeds.org/assurance/IAP/medium")) {
@@ -90,7 +90,7 @@ def Map<String, List<Object>> run(final Object... args) {
             loa = "http://cas.cuni.cz/LoA/none"
             logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
             eass = attributes["edu_assurance"]
-            if(eass.metaClass.respondsTo(eass, "contains")) {
+            if(eass !== null && eass.metaClass.respondsTo(eass, "contains")) {
                 if(eass.contains("https://refeds.org/assurance/IAP/high")) {
                     loa = "http://cas.cuni.cz/LoA/high"
                 } else if(eass.contains("https://refeds.org/assurance/IAP/medium")) {
