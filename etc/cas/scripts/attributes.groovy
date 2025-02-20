@@ -45,6 +45,9 @@ def Map<String, List<Object>> run(final Object... args) {
 
     // define LoA based on remote client and amr
     def loa = "http://cas.cuni.cz/LoA/none"
+    if(attributes["cuniauthservice"] == null || attributes["cuniauthservice"].isEmpty()) {
+	loa = "http://cas.cuni.cz/LoA/low"
+    }
     logger.debug("XXX Producing LoA based on remote client [{}] and authentication method [{}]", values["auth_delegated_client"], amr)
     logger.debug("XXX typeof amr [{}]", amr.class.simpleName)
     logger.debug("XXX typeof amr[0] [{}]", (amr instanceof List && amr.size() > 0) ? amr.first().class.simpleName : null)
@@ -72,34 +75,14 @@ def Map<String, List<Object>> run(final Object... args) {
 		break;
 
 	case "eduid":
-            loa = "http://cas.cuni.cz/LoA/none"
-            logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
-            eass = attributes["edu_assurance"]
-            if(eass !== null && eass.metaClass.respondsTo(eass, "contains")) {
-                if(eass.contains("https://refeds.org/assurance/IAP/high")) {
-                    loa = "http://cas.cuni.cz/LoA/high"
-                } else if(eass.contains("https://refeds.org/assurance/IAP/medium")) {
-                    loa = "http://cas.cuni.cz/LoA/substantial"
-                } else if(eass.contains("https://refeds.org/assurance/IAP/low")) {
-                    loa = "http://cas.cuni.cz/LoA/low"
-                }
-            }
-            break;
+		loa = "http://cas.cuni.cz/LoA/none"
+                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+		break;
 
 	case "edugain":
-            loa = "http://cas.cuni.cz/LoA/none"
-            logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
-            eass = attributes["edu_assurance"]
-            if(eass !== null && eass.metaClass.respondsTo(eass, "contains")) {
-                if(eass.contains("https://refeds.org/assurance/IAP/high")) {
-                    loa = "http://cas.cuni.cz/LoA/high"
-                } else if(eass.contains("https://refeds.org/assurance/IAP/medium")) {
-                    loa = "http://cas.cuni.cz/LoA/substantial"
-                } else if(eass.contains("https://refeds.org/assurance/IAP/low")) {
-                    loa = "http://cas.cuni.cz/LoA/low"
-                }
-            }
-            break;
+		loa = "http://cas.cuni.cz/LoA/none"
+                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+		break;
 
 	default:
 		break;
