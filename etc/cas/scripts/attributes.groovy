@@ -29,7 +29,12 @@ def Map<String, List<Object>> run(final Object... args) {
     }
 
     def requestContext = RequestContextHolder.getRequestContext()
-    def clientCredential = requestContext?.getRequestScope()?.get("credential", ClientCredential.class)
+    def clientCredential = null;
+    try {
+        clientCredential = requestContext?.getRequestScope()?.get("credential", ClientCredential.class)
+    } catch (Exception e) {
+        logger.debug("XXX ClientCredential not found for [{}]", username)
+    }
 
     values["auth_delegated_client"] = clientCredential?.getClientName()
     values["auth_saml2_credentials"] = (clientCredential?.getCredentials() instanceof SAML2Credentials) 
@@ -37,7 +42,7 @@ def Map<String, List<Object>> run(final Object... args) {
 
     // amr as presented by remote client
     def amr = attributes["amr"] ?: []
-    if(clientCredential?.getCredentials() instanceof SAML2Credentials) {
+    if(clientCredential instanceof ClientCredential && clientCredential?.getCredentials() instanceof SAML2Credentials) {
         def saml2creds = (SAML2Credentials)clientCredential.getCredentials()
         amr.addAll(saml2creds.authnContexts)
     }
