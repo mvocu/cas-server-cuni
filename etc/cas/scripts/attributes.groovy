@@ -15,16 +15,30 @@ def Map<String, List<Object>> run(final Object... args) {
     def values = ["username" : username ]
 
     def matcher =  (attributes["cunimailverificationexpiration"] =~ /(\d\d\d\d)(\d\d)(\d\d)\d\d\d\d\d\dZ/)
+    def email = []
+    def email_verified = false
     if( matcher ) {
        def (year, month, day) = matcher[0][1..3]*.toInteger()
        def expiration = new Date(year, month, day)
        def now = new Date()
        if(now < expiration) {
-            values["email"] = attributes["cuniauthorizedmail"]
-	    values["email_verified"] = true
+            email = attributes["cuniauthorizedmail"]
+	    email_verified = true
        } else {
-            values["email"] = attributes["mail"]
-	    values["email_verified"] = false
+            email = attributes["mail"]
+	    email_verified = false
+       }
+    } else {
+       email = attributes["mail"]
+       email_verified = false
+    }
+    if(!email?.isEmpty()) {
+       if(attributes["email_verified"]?.equals(true)) {
+          if(email_verified) {
+              values["email"] = email
+          }
+       } else {
+          values["email"] = email
        }
     }
 
