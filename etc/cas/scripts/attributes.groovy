@@ -10,7 +10,7 @@ def Map<String, List<Object>> run(final Object... args) {
     def properties = args[3]
     def appContext = args[4]
 
-    logger.debug("[{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
+    //logger.debug("[{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
 
     def values = ["username" : username ]
 
@@ -19,7 +19,7 @@ def Map<String, List<Object>> run(final Object... args) {
     def email_verified = false
     if( matcher ) {
        def (year, month, day) = matcher[0][1..3]*.toInteger()
-       def expiration = new Date(year, month, day)
+       def expiration = new Date(year - 1900, month - 1, day)
        def now = new Date()
        if(now < expiration) {
             email = attributes["cuniauthorizedmail"]
@@ -33,13 +33,18 @@ def Map<String, List<Object>> run(final Object... args) {
        email_verified = false
     }
     if(!email?.isEmpty()) {
+       values["email"] = email.head()
+       values["email_verified"] = email_verified
+       /*
        if(attributes["email_verified"]?.equals(true)) {
           if(email_verified) {
               values["email"] = email
           }
        } else {
           values["email"] = email
+          values["email_verified"] = email_verified
        }
+       */
     }
 
     def requestContext = RequestContextHolder.getRequestContext()
@@ -108,7 +113,7 @@ def Map<String, List<Object>> run(final Object... args) {
     }
     values["auth_loa"] = loa
 
-    //logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}] from context [{}]", this.class.simpleName, username, values, RequestContextHolder.getRequestContext()) 
+    logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}] from context [{}]", this.class.simpleName, username, values, RequestContextHolder.getRequestContext()) 
 
     return values
 }
