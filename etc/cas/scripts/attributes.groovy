@@ -10,7 +10,7 @@ def Map<String, List<Object>> run(final Object... args) {
     def properties = args[3]
     def appContext = args[4]
 
-    //logger.debug("[{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
+    logger.info("XXX [{}]: Producing additional attributes for uid [{}], current attributes [{}]", this.class.simpleName, username, attributes)
 
     def values = ["username" : username ]
 
@@ -32,8 +32,8 @@ def Map<String, List<Object>> run(final Object... args) {
        email = attributes["mail"]
        email_verified = false
     }
-    if(!email?.isEmpty()) {
-       values["email"] = email.head()
+    if(email && !email?.isEmpty()) {
+       values["email"] = email?.head()
        values["email_verified"] = email_verified
        /*
        if(attributes["email_verified"]?.equals(true)) {
@@ -113,7 +113,8 @@ def Map<String, List<Object>> run(final Object... args) {
     }
     values["auth_loa"] = loa
 
-    logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}] from context [{}]", this.class.simpleName, username, values, RequestContextHolder.getRequestContext()) 
+    //logger.debug("[{}]: Producing additional attributes for uid [{}], new attributes [{}] from context [{}]", this.class.simpleName, username, values, RequestContextHolder.getRequestContext()) 
+    logger.info("XXX [{}]: Producing additional attributes for uid [{}], new attributes [{}]", this.class.simpleName, username, values) 
 
     return values
 }
