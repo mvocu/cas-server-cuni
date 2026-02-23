@@ -14,6 +14,12 @@ def Map<String, List<Object>> run(final Object... args) {
 
     def values = ["username" : username ]
 
+    if(attributes["mobile"] == null || attributes["mobile"].isEmpty()) {
+        if(attributes["mobile_whois"] && !attributes["mobile_whois"].isEmpty()) {
+            values["mobile"] = attributes["mobile_whois"]
+        }
+    }
+
     def matcher =  (attributes["cunimailverificationexpiration"] =~ /(\d\d\d\d)(\d\d)(\d\d)\d\d\d\d\d\dZ/)
     def email = []
     def email_verified = false

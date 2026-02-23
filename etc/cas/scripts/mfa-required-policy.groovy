@@ -62,9 +62,9 @@ def String run(final Object... args) {
     flowScope?.put("cuniMfaAvailableHandlers", availableHandlers)
     flowScope?.put("cuniMfaPreferredHandlers", preferredHandlers)
 
-    logger.info("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]", 
+    logger.debug("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]", 
 	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, requestMfaLevel, flowScope)
-    logger.info("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
+    logger.debug("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
  
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
@@ -97,7 +97,9 @@ def String run(final Object... args) {
         if(mfaAvailable) {
 		return mfaMethod
         } else {
-                throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
+                if(flowScope) {
+                        throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
+                }
         }
     }
 
