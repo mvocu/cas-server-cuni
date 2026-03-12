@@ -21,6 +21,7 @@ def String run(final Object... args) {
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
+    def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
     def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord != null ? true : false
     def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
@@ -28,14 +29,15 @@ def String run(final Object... args) {
     def requestMfaMethod = httpRequest.getParameterValues("acr_values")  ?:  ( httpRequest.getParameterValues("authn_method") ?: [] )
     def requestMfaLevel = httpRequest.getParameterValues("mfa")
 
-    def mfaMethod = "mfa-composite"
+    def defaultMfaMethod = "mfa-composite"
+    def mfaMethod = null
 
     // try to obtain requestMfaMethod from service redirect uri
     if(!requestMfaMethod) {
-	def svc = httpRequest.getParameterValues("service")
+        def svc = httpRequest.getParameterValues("service")
         if(svc) {
-		def params = (new URIBuilder(svc[0])).getQueryParams()
-		for(param in params) {
+            def params = (new URIBuilder(svc[0])).getQueryParams()
+            for(param in params) {
                         switch(param.getName()) {
                                 case 'acr_values':
                                         requestMfaMethod = param.getValue()
@@ -45,8 +47,10 @@ def String run(final Object... args) {
                                         requestMfaMethod = param.getValue()
                                         break
                         }
-                }
- 	}
+            }
+        }
+    } else {
+        requestMfaMethod = requestMfaMethod.isEmpty() ? null : requestMfaMethod.first()
     }
 
     def availableHandlers = [ ] 
@@ -63,13 +67,14 @@ def String run(final Object... args) {
     flowScope?.put("cuniMfaPreferredHandlers", preferredHandlers)
 
     logger.debug("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]", 
-	authentication.principal.id, serviceMfaLevel, registeredService.getProperties()?.get("mfaAllowRegistration"), principalMfaPolicy, requestMfaMethod, requestMfaLevel, flowScope)
+            authentication.principal.id, serviceMfaLevel, mfaRegistrationAllowed, principalMfaPolicy, requestMfaMethod,
+            requestMfaLevel, flowScope)
     logger.debug("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
  
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
     if(serviceMfaLevel.contains("required")) {
-	mfaRequired = true
+        mfaRequired = true
     }
 
     if(principalMfaPolicy.contains("always")) {
@@ -80,26 +85,45 @@ def String run(final Object... args) {
         mfaRequired = true
     }
 
+    // this is used by OIDC/CAS clients (such as IdPortal] requesting specific MFA authn context
     if(requestMfaMethod && configuredHandlers.contains(requestMfaMethod)) {
         mfaRequired = true
         mfaMethod = requestMfaMethod
     }
 
+    // this parameter is used by Shibboleth IdP when MFA authn context is required
     if(requestMfaLevel && requestMfaLevel.contains("true")) {
         mfaRequired = true
     }
 
-    if(!principalMfaPolicy.contains("none") || registeredService.getProperties()?.get("mfaAllowRegistration")?.contains("true")) {
+    /*  Relevant conditions:
+     *    - user has MFA on
+     *    - user has MFA method available
+     *    - request needs MFA
+     *    - request needs specific MFA method
+     *    - service allows MFA registration <=> mfaRegistrationAllowed
+     */
+
+    mfaAvailable = !availableHandlers.isEmpty()
+
+    /* XXX - disabled
+    if(!principalMfaPolicy.contains("none") || mfaRegistrationAllowed) {
         mfaAvailable = true
+    }
+    */
+
+    if(mfaRegistrationAllowed && !mfaAvailable) {
+        // For registration apps, if there is no method available and none particular is requested, skip MFA at all.
+        return mfaMethod // this may return null if no particular method was requested
     }
 
     if(mfaRequired) {
         if(mfaAvailable) {
-		return mfaMethod
+            return mfaMethod ?: defaultMfaMethod
         } else {
-                if(flowScope) {
-                        throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
-                }
+            if(flowScope) {
+                throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
+            }
         }
     }
 

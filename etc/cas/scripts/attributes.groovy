@@ -76,7 +76,7 @@ def Map<String, List<Object>> run(final Object... args) {
     // define LoA based on remote client and amr
     def loa = "http://cas.cuni.cz/LoA/none"
     if(attributes["cuniauthservice"] == null || attributes["cuniauthservice"].isEmpty()) {
-	loa = "http://cas.cuni.cz/LoA/low"
+        loa = "http://cas.cuni.cz/LoA/low"
     }
     logger.debug("XXX Producing LoA based on remote client [{}] and authentication method [{}]", values["auth_delegated_client"], amr)
     logger.debug("XXX typeof amr [{}]", amr.class.simpleName)
@@ -106,12 +106,12 @@ def Map<String, List<Object>> run(final Object... args) {
 
 	case "eduid":
 		loa = "http://cas.cuni.cz/LoA/none"
-                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+        logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
 		break;
 
 	case "edugain":
 		loa = "http://cas.cuni.cz/LoA/none"
-                logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
+        logger.debug("XXX value of edu_assurance [{}]", attributes["edu_assurance"])
 		break;
 
 	default:
