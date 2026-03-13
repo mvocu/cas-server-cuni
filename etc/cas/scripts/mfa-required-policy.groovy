@@ -17,12 +17,14 @@ def String run(final Object... args) {
 
     def mfaRequired = false
     def mfaAvailable = false
+    def trustedAuth = false
 
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
+    def principalLoA = authentication.principal.attributes?.auth_loa ?: ["http://cas.cuni.cz/LoA/none"]
     def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord != null ? true : false
     def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
     def hasSimple = authentication.principal.attributes?.mobile ? true : false
@@ -66,10 +68,10 @@ def String run(final Object... args) {
     flowScope?.put("cuniMfaAvailableHandlers", availableHandlers)
     flowScope?.put("cuniMfaPreferredHandlers", preferredHandlers)
 
-    logger.debug("Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]", 
+    logger.debug("XXX Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]",
             authentication.principal.id, serviceMfaLevel, mfaRegistrationAllowed, principalMfaPolicy, requestMfaMethod,
             requestMfaLevel, flowScope)
-    logger.debug("Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
+    logger.debug("XXX Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
  
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
@@ -102,9 +104,13 @@ def String run(final Object... args) {
      *    - request needs MFA
      *    - request needs specific MFA method
      *    - service allows MFA registration <=> mfaRegistrationAllowed
+     *    - principal LoA in first auth step
      */
 
     mfaAvailable = !availableHandlers.isEmpty()
+
+    def trustedLoA = [ "http://cas.cuni.cz/LoA/sufficient", "http://cas.cuni.cz/LoA/high" ]
+    trustedAuth = trustedLoA.contains(principalLoA.first())
 
     /* XXX - disabled
     if(!principalMfaPolicy.contains("none") || mfaRegistrationAllowed) {
@@ -112,7 +118,7 @@ def String run(final Object... args) {
     }
     */
 
-    if(mfaRegistrationAllowed && !mfaAvailable) {
+    if(mfaRegistrationAllowed && (!mfaAvailable || trustedAuth)) {
         // For registration apps, if there is no method available and none particular is requested, skip MFA at all.
         return mfaMethod // this may return null if no particular method was requested
     }

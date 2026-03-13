@@ -13,7 +13,7 @@ def boolean run(final Object... args) {
 
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
-    logger.debug("Evaluating MFA bypass for principal [{}] with attributes [{}], service registration [{}], flow scope [{}]", 
+    logger.debug("XXX Evaluating MFA bypass for principal [{}] with attributes [{}], service registration [{}], flow scope [{}]",
         authentication.principal.id, principal.attributes, registeredService.getProperties()?.get("mfaAllowRegistration"), flowScope)
 
     // Stuff happens...
