@@ -11,5 +11,13 @@ def run(final Object... args) {
     def block = false
     def ssoEnabled = true
 
-    return new InterruptResponse("Message", [link1:"ldapuser.cuni.cz/idportal/mfa", link2:"ldapuser.cuni.cz/idportal/ext"], block, ssoEnabled)
+    def response = new InterruptResponse(
+            "Message",
+            [link1:"ldapuser.cuni.cz/idportal/mfa", link2:"ldapuser.cuni.cz/idportal/ext"],
+            block,
+            ssoEnabled
+    )
+    response.data = [ "name" : "value" ]
+
+    return response
 }

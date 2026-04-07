@@ -65,15 +65,15 @@
 
                 </div>
             </div>
-            <div class="mdc-data-table table-responsive mt-2 mb-4">
+            <div class="mdc-data-table table-responsive mt-4 mb-5 w-100">
                 <table id="attributesTable"
                        th:if="${interrupt.data} and ${#maps.size(interrupt.data) > 0}"
                        class="table table-striped w-100"
                        aria-label="Attributes">
                     <thead>
                     <tr class="mdc-data-table__header-row">
-                        <th class="mdc-data-table__header-cell">Field</th>
-                        <th class="mdc-data-table__header-cell">Value</th>
+                        <th class="mdc-data-table__header-cell"><span th:utext="#{screen.interrupt.field}">Field</span></th>
+                        <th class="mdc-data-table__header-cell"><span th:utext="#{screen.interrupt.value}">Value</span></th>
                     </tr>
                     </thead>
                     <tbody class="mdc-data-table__content">
