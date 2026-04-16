@@ -11,13 +11,21 @@ def run(final Object... args) {
     def block = false
     def ssoEnabled = true
 
+    def flowScope = requestContext?.getFlowScope()
+    def mfaAvailable = flowScope?.get("cuniMfaAvailableHandlers", [])
+    def mfaEnabled = attributes?.cunimfapolicy?.contains("always") ?: false
+
+
     def response = new InterruptResponse(
-            "Message",
-            [link1:"ldapuser.cuni.cz/idportal/mfa", link2:"ldapuser.cuni.cz/idportal/ext"],
+            "screen.interrupt.mfa.message(31.5.2026)",
+            [ "screen.interrupt.mfa.link": "https://ldapuser.cuni.cz/idportal/mfa"],
             block,
             ssoEnabled
     )
-    response.data = [ "name" : "value" ]
+
+    response.data = [
+            "mfaAvailable" : mfaAvailable.toString()
+    ]
 
     return response
 }
