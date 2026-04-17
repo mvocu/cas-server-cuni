@@ -168,6 +168,14 @@ dependencies {
     implementation "org.apereo.cas:cas-server-support-spnego-webflow:${project.'cas.version'}"
     implementation "org.apereo.cas:cas-server-support-pac4j-webflow:${project.'cas.version'}"
 
+    /* account registration */
+    /*
+    implementation "org.apereo.cas:cas-server-support-account-mgmt:${project.'cas.version'}"
+    */
+
+    /* interrupt notifications */
+    implementation "org.apereo.cas:cas-server-support-interrupt-webflow:${project.'cas.version'}"
+
     /* for GAuth notifications */
     implementation "org.apereo.cas:cas-server-support-websockets:${project.'cas.version'}"
 
@@ -181,6 +189,11 @@ dependencies {
     implementation files("${projectDir}/lib/jcifs-ext.jar")
 
     /* for eidas extension to saml2 */
+    implementation("se.swedenconnect.opensaml:opensaml-security-ext:4.1.7") {
+        exclude group: "org.opensaml", module: "opensaml-xmlsec-api"
+        exclude group: "org.opensaml", module: "opensaml-core-api"
+        exclude group: "org.opensaml", module: "opensaml-core-impl"
+    }
     implementation ('se.litsec.eidas:eidas-opensaml4:2.1.2') {
         exclude group: "org.opensaml", module: "opensaml-xmlsec-api"
         exclude group: "org.opensaml", module: "opensaml-core-api"

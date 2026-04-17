@@ -37,7 +37,7 @@
 
         <div th:if="${interrupt.message}">
             <div class="alert alert-info">
-                <p id="interruptMessage" th:utext="${interrupt.message}">interrupt.message</p>
+                <p id="interruptMessage" th:utext="#{__${interrupt.message}__}">interrupt.message</p>
                 <div id="interruptLinks" th:if="${interrupt.links}">
                     <form method="post" id="formlinks">
                         <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
@@ -48,7 +48,7 @@
                     <span th:with="linkid=${#strings.toLowerCase(#strings.replace(link.key, ' ', ''))}"
                           th:each="link : ${interrupt.links}">
                         <a class="mdc-button mdc-button--outline btn btn-primary me-2"
-                           th:text="${link.key}"
+                           th:text="#{screen.interrupt.link.__${link.key}__}"
                            th:id="${linkid}">
                             <span class="mdc-button__label">link.key</span>
                         </a>
