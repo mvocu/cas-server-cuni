@@ -13,13 +13,20 @@ def run(final Object... args) {
 
     def block = false
     def ssoEnabled = true
+    def activate = [ "staff@ruk.cuni.cz", "employee@ruk.cuni.cz", "staff@lfp.cuni.cz", "employee@lfp.cuni.cz" ]
 
     def flowScope = requestContext.getFlowScope()
     def mfaAvailable = flowScope?.get("cuniMfaAvailableHandlers", [])
     def mfaEnabled = attributes?.cunimfapolicy?.contains("always") ?: false
 
+    if(mfaEnabled) {
+         return InterruptResponse.none()
+    }
+
+    def isActivating = attributes?.edupersonscopedaffiliation?.any(it -> { return activate.contains(it) })
+
     def response = new InterruptResponse(
-         "screen.interrupt.mfa.message_activate('31.5.2026', '31.10.2026')",
+         isActivating ? "screen.interrupt.mfa.message_activate('31.5.2026')" : "screen.interrupt.mfa.message('31.10.2026')",
          [ "activatemfa" : "https://ldapuser.cuni.cz/idportal/mfa"],
          block,
          ssoEnabled
