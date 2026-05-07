@@ -18,8 +18,9 @@ def run(final Object... args) {
     def flowScope = requestContext.getFlowScope()
     def mfaAvailable = flowScope?.get("cuniMfaAvailableHandlers", [])
     def mfaEnabled = attributes?.cunimfapolicy?.contains("always") ?: false
+    def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
 
-    if(mfaEnabled) {
+    if(mfaEnabled || mfaRegistrationAllowed) {
          return InterruptResponse.none()
     }
 
