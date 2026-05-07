@@ -26,6 +26,10 @@ def run(final Object... args) {
 
     def isActivating = attributes?.edupersonscopedaffiliation?.any(it -> { return activate.contains(it) })
 
+    if(!isActivating) {
+         return InterruptResponse.none()
+    }
+
     def response = new InterruptResponse(
          isActivating ? "screen.interrupt.mfa.message_activate('31.5.2026')" : "screen.interrupt.mfa.message('31.10.2026')",
          [ "activatemfa" : "https://ldapuser.cuni.cz/idportal/mfa"],
