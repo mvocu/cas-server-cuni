@@ -109,7 +109,7 @@ def String run(final Object... args) {
 
     mfaAvailable = !availableHandlers.isEmpty()
 
-    def trustedLoA = [ "http://cas.cuni.cz/LoA/sufficient", "http://cas.cuni.cz/LoA/high" ]
+    def trustedLoA = [ "http://cas.cuni.cz/LoA/substantial", "http://cas.cuni.cz/LoA/high" ]
     trustedAuth = trustedLoA.contains(principalLoA.first())
 
     /* XXX - disabled
@@ -117,6 +117,9 @@ def String run(final Object... args) {
         mfaAvailable = true
     }
     */
+
+    logger.info("XXX MFA trigger conditions for [{}]: required [{}], available [{}], registration [{}], method [{}], trusted [{}]",
+          authentication.principal?.id, mfaRequired, mfaAvailable, mfaRegistrationAllowed, mfaMethod, trustedAuth)
 
     if(mfaRegistrationAllowed && (!mfaAvailable || trustedAuth)) {
         // For registration apps, if there is no method available and none particular is requested, skip MFA at all.
