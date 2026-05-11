@@ -21,7 +21,7 @@ def String run(final Object... args) {
 
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
-    def mfaResetRole = "cn=mfaResetRole,dc=cuni,dc=cz"
+    def mfaResetRole = "cn=mfaresetrole,dc=cuni,dc=cz"
 
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
