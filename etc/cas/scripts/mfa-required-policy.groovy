@@ -21,10 +21,13 @@ def String run(final Object... args) {
 
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
+    def mfaResetRole = "cn=mfaResetRole,dc=cuni,dc=cz"
+
     def serviceMfaLevel = registeredService.getProperties()?.get("mfaLevel") ?: ["none"]
     def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
     def principalMfaPolicy = authentication.principal.attributes?.cunimfapolicy ?: ["none"]
     def principalLoA = authentication.principal.attributes?.auth_loa ?: ["http://cas.cuni.cz/LoA/none"]
+    def needsMfaReset = (authentication.principal.attributes?.nsrole ?: []).contains(mfaResetRole)
     def hasWebAuthn = authentication.principal.attributes?.caswebauthnrecord != null ? true : false
     def hasGAuth = authentication.principal.attributes?.casgauthrecord ? true : false
     def hasSimple = authentication.principal.attributes?.mobile ? true : false
@@ -98,6 +101,11 @@ def String run(final Object... args) {
         mfaRequired = true
     }
 
+    // if MFA reset is mandated by role, set mfaRequired to enforce MFA except for registration
+    if(needsMfaReset) {
+        mfaRequired = true
+    }
+
     /*  Relevant conditions:
      *    - user has MFA on
      *    - user has MFA method available
@@ -107,7 +115,7 @@ def String run(final Object... args) {
      *    - principal LoA in first auth step
      */
 
-    mfaAvailable = !availableHandlers.isEmpty()
+    mfaAvailable = !availableHandlers.isEmpty() && !needsMfaReset
 
     def trustedLoA = [ "http://cas.cuni.cz/LoA/substantial", "http://cas.cuni.cz/LoA/high" ]
     trustedAuth = trustedLoA.contains(principalLoA.first())
