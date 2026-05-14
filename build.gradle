@@ -203,6 +203,9 @@ dependencies {
     /* for running on jetty */
     implementation "org.eclipse.jetty:jetty-util:10.0.7"
 
+    /* for logging to Loki */
+    implementation 'com.github.loki4j:loki-logback-appender:1.5.2'
+
     developmentOnly "org.springframework.boot:spring-boot-devtools:${project.springBootVersion}"
 
     compileOnly "org.springframework.boot:spring-boot:${project.springBootVersion}"
