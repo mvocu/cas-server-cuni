@@ -62,9 +62,13 @@ def String run(final Object... args) {
     def preferredHandlers = [ ]
     def configuredHandlers = ["mfa-webauthn", "mfa-gauth", "mfa-simple"]
 
-    if(hasWebAuthn) { availableHandlers.add("mfa-webauthn") }
+    if(hasWebAuthn) { availableHandlers.add("mfa-webauthn"); preferredHandlers.add("mfa-webauthn") }
     if(hasGAuth)    { availableHandlers.add("mfa-gauth"); preferredHandlers.add("mfa-gauth") }
     if(hasSimple)   { availableHandlers.add("mfa-simple") }
+
+    if(availableHandlers.size() == 1) {
+        defaultMfaMethod = availableHandlers.first()
+    }
 
     if(availableHandlers && !preferredHandlers) { preferredHandlers.add(availableHandlers.first()) }
 
