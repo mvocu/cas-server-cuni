@@ -28,6 +28,7 @@ def run(final Object... args) {
     })
 
     if(!isActivating) {
+         logger.debug("XXX no interrupt notification for [{}] with affiliations [{}]", principal?.id, attributes?.edupersonscopedaffiliation)
          return InterruptResponse.none()
     }
 
@@ -48,6 +49,8 @@ def run(final Object... args) {
        "affiliation" : attributes?.edupersonscopedaffiliation
     ] 
     */
+
+    logger.debug("XXX showing interrupt notification for [{}] with affiliations [{}]", principal?.id, attributes?.edupersonscopedaffiliation)
 
     return response
 }
