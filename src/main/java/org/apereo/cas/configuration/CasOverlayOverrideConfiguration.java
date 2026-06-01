@@ -18,7 +18,7 @@ import org.springframework.webflow.definition.registry.FlowDefinitionRegistry;
 import org.springframework.webflow.engine.builder.support.FlowBuilderServices;
 
 @AutoConfiguration
-@Configuration(value = "CasOverlayOverrideConfiguration", proxyBeanMethods = false)
+//@Configuration(value = "CasOverlayOverrideConfiguration", proxyBeanMethods = false)
 @EnableConfigurationProperties(CasConfigurationProperties.class)
 public class CasOverlayOverrideConfiguration {
 
