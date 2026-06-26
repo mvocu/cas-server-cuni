@@ -24,7 +24,8 @@ def run(final Object... args) {
     }
 
     def isActivating = attributes?.edupersonscopedaffiliation?.any(it -> {
-        return String.valueOf(it).startsWith("employee@") || String.valueOf(it).startsWith("staff@") 
+        return (String.valueOf(it).startsWith("employee@") || String.valueOf(it).startsWith("staff@"))
+                // && !String.valueOf(it).endsWith("mff.cuni.cz")
     })
 
     if(!isActivating) {
@@ -33,8 +34,8 @@ def run(final Object... args) {
     }
 
     def response = new InterruptResponse(
-        // isActivating ? "screen.interrupt.mfa.message_activate('31.5.2026')" : "screen.interrupt.mfa.message('31.10.2026')",
-         "screen.interrupt.mfa.message('31.10.2026')",
+        // isActivating ? "screen.interrupt.mfa.message_activate('31.5.2026', '31.10.2026')" : "screen.interrupt.mfa.message('31.10.2026')",
+         "screen.interrupt.mfa.message_activate('1.6.2026', '31.10.2026')",
          [ "activatemfa" : "https://ldapuser.cuni.cz/idportal/mfa"],
          block,
          ssoEnabled
