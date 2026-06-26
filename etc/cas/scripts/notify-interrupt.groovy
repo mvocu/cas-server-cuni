@@ -24,7 +24,9 @@ def run(final Object... args) {
     }
 
     def isActivating = attributes?.edupersonscopedaffiliation?.any(it -> {
-        return String.valueOf(it).startsWith("employee@") || String.valueOf(it).startsWith("staff@") 
+        return (String.valueOf(it).startsWith("employee@") || String.valueOf(it).startsWith("staff@"))
+                && !String.valueOf(it).endsWith("mff.cuni.cz")
+
     })
 
     if(!isActivating) {
