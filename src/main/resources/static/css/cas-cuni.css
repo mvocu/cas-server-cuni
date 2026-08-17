@@ -97,6 +97,11 @@ div#content {
     box-shadow: 0 0 white;
 }
 
+#serviceUIMetadataLogo {
+    max-width: 64px;
+    margin-right: 1em;
+}
+
 .cas-footer {
     color: inherit;
     background: inherit;
