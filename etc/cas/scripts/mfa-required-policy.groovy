@@ -78,7 +78,7 @@ def String run(final Object... args) {
     logger.debug("XXX Evaluating MFA requirements for principal [{}], service policy [{}], service registration [{}], principal policy [{}], request method [{}], request level [{}], flow scope [{}]",
             authentication.principal.id, serviceMfaLevel, mfaRegistrationAllowed, principalMfaPolicy, requestMfaMethod,
             requestMfaLevel, flowScope)
-    logger.debug("XXX Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
+    logger.info("XXX Setting MFA available handlers [{}] and preferred handlers [{}]", availableHandlers, preferredHandlers);
  
     // throw new AuthenticationException(new MultifactorAuthenticationRequiredException())
      
