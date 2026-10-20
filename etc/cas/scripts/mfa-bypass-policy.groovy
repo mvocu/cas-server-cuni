@@ -18,7 +18,16 @@ def boolean run(final Object... args) {
 
     // Stuff happens...
 
+    def loa = principal.attributes["auth_loa"]
+    def trustedLoA = [ "http://cas.cuni.cz/LoA/substantial", "http://cas.cuni.cz/LoA/high" ]
+
+
     // true means continue with MFA, false means skip it
+
+    if(trustedLoA.contains(loa?.first())) {
+	return false
+    }
+
     return true
 }
 
