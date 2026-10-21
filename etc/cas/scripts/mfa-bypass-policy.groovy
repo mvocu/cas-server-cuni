@@ -13,6 +13,8 @@ def boolean run(final Object... args) {
 
     def flowScope = RequestContextHolder?.getRequestContext()?.getFlowScope()
 
+    def mfaRegistrationAllowed = (registeredService.getProperties()?.get("mfaAllowRegistration") ?: ["false"]).contains("true")
+
     logger.info("XXX Evaluating MFA bypass for principal [{}] with attributes [{}], service registration [{}]",
         authentication.principal.id, principal.attributes, registeredService?.getProperties()?.get("mfaAllowRegistration"))
 
@@ -24,8 +26,9 @@ def boolean run(final Object... args) {
 
     // true means continue with MFA, false means skip it
 
-    if(trustedLoA.contains(loa?.first())) {
-	return false
+    // if we are not going for registration and we have established trust in authenticated principal, skip mfa
+    if(trustedLoA.contains(loa?.first()) && !mfaRegistrationAllowed) {
+        return false
     }
 
     return true
